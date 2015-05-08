@@ -1,4 +1,4 @@
-package p6;
+package webservice;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -8,10 +8,10 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 
-import P3.Dia;
-import P5.DiaJSON;
-import P5.Prediccion;
-import P5.SemanaJSON;
+import webservice.P3.Dia;
+import webservice.P5.DiaJSON;
+import webservice.P5.Prediccion;
+import webservice.P5.SemanaJSON;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,7 +21,7 @@ import com.google.gson.GsonBuilder;
  * Practica 6
  * @author Guillermo Perez
  *
- * Primera aplicación de la práctica 5, adaptada de la P3
+ * Primera aplicaciï¿½n de la prï¿½ctica 5, adaptada de la webservice.P3
  */
 public class XMLParser {
 	static Dia[] semana = new Dia[7];
@@ -71,7 +71,7 @@ public class XMLParser {
 			Element raiz = doc.getRootElement();
 			if(raiz.getName().equals("root")){
 
-				//Descendemos nivel a nivel hasta llegar a la predicción de un día
+				//Descendemos nivel a nivel hasta llegar a la predicciï¿½n de un dï¿½a
 				
 				for(Element nivel2: raiz.getChildren()){
 					ciudad=raiz.getChild("nombre").getValue().toLowerCase();
@@ -88,8 +88,8 @@ public class XMLParser {
 									switch(tag.getName()){
 									case "prob_precipitacion": 
 										if(!tag.getValue().equals(null) && !tag.getAttributeValue("periodo").equals(null)){
-											// De las 7 posiciones del vector asignamos una a cada período.
-											// No tienen por qué estar completas todas. No siempre existen datos de todos los intervalos.
+											// De las 7 posiciones del vector asignamos una a cada perï¿½odo.
+											// No tienen por quï¿½ estar completas todas. No siempre existen datos de todos los intervalos.
 											// El orden de los vectores se describe en la clase Dia
 											if(tag.getAttributeValue("periodo").equals("00-06")){
 												semana[index_dia].precip[0] = tag.getValue();
@@ -236,7 +236,7 @@ public class XMLParser {
 								}catch (Exception ex){}
 							}//fin for tags
 							
-							index_dia++; //Pasamos a leer la info del siguiente día 
+							index_dia++; //Pasamos a leer la info del siguiente dï¿½a 
 						}//fin for dias
 						
 					}//fin if prediccion
@@ -254,7 +254,7 @@ public class XMLParser {
 		Prediccion p=null;
 		int hora=0, duracion=0;
 		// orden de los valores: 0-6, 6-12, 12-18, 18-24, 00-12, 12-24, 00-24
-		// para los vectores de tamaño 2: min, max
+		// para los vectores de tamaï¿½o 2: min, max
 		for(int dia=0;dia<7;dia++){
 			int day = Integer.parseInt(semana[dia].fecha.substring(8,10));
 			int month = Integer.parseInt(semana[dia].fecha.substring(5,7));
@@ -320,7 +320,7 @@ public class XMLParser {
 		for(index_dia=0;index_dia<7;index_dia++){
 			int max=0;
 			DiaJSON day = sem.prediccionSemana.get(index_dia);	
-			for(int i=1;i<day.predicciones.size();i++){ //intervalo más grande de este día
+			for(int i=1;i<day.predicciones.size();i++){ //intervalo mï¿½s grande de este dï¿½a
 				if(day.predicciones.get(i).duracion>day.predicciones.get(i-1).duracion){ max=i;	}
 			}
 			maximos[index_dia]=max;

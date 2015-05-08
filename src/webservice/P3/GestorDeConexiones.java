@@ -1,10 +1,10 @@
-package P3;
+package webservice.P3;
 /**
  * Sistemas y Tecnologias Web 2014-2015
  * Practica 5
  * @author Guillermo Perez Garcia
  * 
- * Clase que realiza las conexiones necesarias para la practica nº5.
+ * Clase que realiza las conexiones necesarias para la practica nï¿½5.
  */
 import java.sql.Connection;
 import java.sql.DriverManager;

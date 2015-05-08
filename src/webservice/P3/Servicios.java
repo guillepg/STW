@@ -1,4 +1,4 @@
-package P3;
+package webservice.P3;
 /**
  * Sistemas de Informacion. 2014-2015
  * Practica 2
@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.StringTokenizer;
 
-import P5.Prediccion;
+import webservice.P5.Prediccion;
 
 
 public final class Servicios{
@@ -23,8 +23,8 @@ public final class Servicios{
 		
 	}
 	/**
-	 * Añade una entrada (fecha y ciudad) a la tabla Fecha 
-	 * @return resultado correcto o fallido de la operación
+	 * Aï¿½ade una entrada (fecha y ciudad) a la tabla Fecha 
+	 * @return resultado correcto o fallido de la operaciï¿½n
 	 * @throws SQLException
 	 */
     public static boolean anadirFecha(String ciudad, int dia, int mes, int anyo) throws SQLException {        	
@@ -47,7 +47,7 @@ public final class Servicios{
     }
     
     /**
-     * @return el id de la fecha correspondiente a los parámetros, ó -1 si no existe
+     * @return el id de la fecha correspondiente a los parï¿½metros, ï¿½ -1 si no existe
      */
     public static int getIdFecha(int dia, int mes, int anyo, String city){
     	try{
@@ -67,8 +67,8 @@ public final class Servicios{
     }
     
     /**
-     * Añade una entrada a la tabla Lluvia unida a una fecha existente
-     * @return resultado de la operación
+     * Aï¿½ade una entrada a la tabla Lluvia unida a una fecha existente
+     * @return resultado de la operaciï¿½n
      * @throws SQLException
      */
     public static boolean anadirLluvia(String ciudad, int id, int hora, int dur, int prob) throws SQLException {      
@@ -93,8 +93,8 @@ public final class Servicios{
     }
     
     /**
-     * Añade una entrada a la tabla Nieve unida a una fecha existente
-     * @return resultado de la operación
+     * Aï¿½ade una entrada a la tabla Nieve unida a una fecha existente
+     * @return resultado de la operaciï¿½n
      * @throws SQLException
      */
     public static boolean anadirNieve(String ciudad, int id, int hora, int dur, int cota) throws SQLException {      
@@ -119,8 +119,8 @@ public final class Servicios{
     }
     
     /**
-     * Añade una entrada a la tabla Viento unida a una fecha existente
-     * @return resultado de la operación
+     * Aï¿½ade una entrada a la tabla Viento unida a una fecha existente
+     * @return resultado de la operaciï¿½n
      * @throws SQLException
      */
     public static boolean anadirViento(String ciudad, int id, int hora, int dur, String dir, int vel, int racha) throws SQLException {      
@@ -149,8 +149,8 @@ public final class Servicios{
     }
     
     /**
-     * Añade una entrada a la Temperatura Lluvia unida a una fecha existente
-     * @return resultado de la operación
+     * Aï¿½ade una entrada a la Temperatura Lluvia unida a una fecha existente
+     * @return resultado de la operaciï¿½n
      * @throws SQLException
      */
     public static boolean anadirTemperatura(String ciudad, int fecha, int min, int max, int min_sens, int max_sens) throws SQLException {      
@@ -177,8 +177,8 @@ public final class Servicios{
     }
     
     /**
-     * Añade una entrada a la tabla Lluvia unida a una fecha existente
-     * @return resultado de la operación
+     * Aï¿½ade una entrada a la tabla Lluvia unida a una fecha existente
+     * @return resultado de la operaciï¿½n
      * @throws SQLException
      */
     public static boolean anadirCielo(String ciudad, int fecha, int hora, int dur, String estado){

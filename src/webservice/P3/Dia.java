@@ -1,4 +1,4 @@
-package P3;
+package webservice.P3;
 
 /**
  * Sistemas y Tecnologias Web 2014-2015
@@ -9,7 +9,7 @@ package P3;
  */
 public class Dia {
 	// orden de los valores: 0-6, 6-12, 12-18, 18-24, 00-12, 12-24, 00-24
-	// para los vectores de tamaño 2: min, max
+	// para los vectores de tamaï¿½o 2: min, max
 	public String fecha="";
 	public String[] precip = new String[7],
 			nieve = new String[7],

@@ -1,11 +1,11 @@
-package P5;
+package webservice.P5;
 
 /**
  * Sistemas y Tecnologias Web 2014-2015
  * Practica 5
  * @author Guillermo Perez
  *
- * Clase que sirve de estructura para la lectura de la base de datos y transformación a JSON
+ * Clase que sirve de estructura para la lectura de la base de datos y transformaciï¿½n a JSON
  */
 public class Prediccion {
 	
