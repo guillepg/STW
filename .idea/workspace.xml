@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7dcc7e25-d864-4bbd-a8ad-a52695a06f36" name="Default" comment="">
-      <change type="MOVED" beforePath="C:\Users\Guille\Documents\GitHub\STW\src\P3\Dia.java" afterPath="$PROJECT_DIR$/src/webservice/P3/Dia.java" />
-      <change type="MOVED" beforePath="C:\Users\Guille\Documents\GitHub\STW\src\P3\GestorDeConexiones.java" afterPath="$PROJECT_DIR$/src/webservice/P3/GestorDeConexiones.java" />
-      <change type="MOVED" beforePath="C:\Users\Guille\Documents\GitHub\STW\src\P3\Servicios.java" afterPath="$PROJECT_DIR$/src/webservice/P3/Servicios.java" />
-      <change type="MOVED" beforePath="C:\Users\Guille\Documents\GitHub\STW\src\P5\DiaJSON.java" afterPath="$PROJECT_DIR$/src/webservice/P5/DiaJSON.java" />
-      <change type="MOVED" beforePath="C:\Users\Guille\Documents\GitHub\STW\src\P5\Prediccion.java" afterPath="$PROJECT_DIR$/src/webservice/P5/Prediccion.java" />
-      <change type="MOVED" beforePath="C:\Users\Guille\Documents\GitHub\STW\src\P5\SemanaJSON.java" afterPath="$PROJECT_DIR$/src/webservice/P5/SemanaJSON.java" />
-      <change type="MOVED" beforePath="C:\Users\Guille\Documents\GitHub\STW\src\p6\XMLParser.java" afterPath="$PROJECT_DIR$/src/webservice/XMLParser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/STW.iml" afterPath="$PROJECT_DIR$/STW.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="7dcc7e25-d864-4bbd-a8ad-a52695a06f36" name="Default" comment="" />
     <ignored path="STW.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -36,31 +25,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="XMLParser.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="XMLParser.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/webservice/XMLParser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33333334" vertical-offset="3406" max-vertical-offset="7021">
-              <caret line="212" column="51" selection-start-line="212" selection-start-column="51" selection-end-line="212" selection-end-column="51" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7021">
+              <caret line="209" column="48" selection-start-line="209" selection-start-column="48" selection-end-line="209" selection-end-column="48" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Interfaz.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Interfaz.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/p6/Interfaz.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2176">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#848#856#0" expanded="false" />
-                <element signature="e#1888#2844#0" expanded="false" />
-                <element signature="e#2843#2844#0" expanded="false" />
-                <element signature="e#2875#3880#0" expanded="false" />
-                <element signature="e#3879#3880#0" expanded="false" />
-                <element signature="e#3911#4856#0" expanded="false" />
-                <element signature="e#4855#4856#0" expanded="false" />
-              </folding>
+            <state vertical-scroll-proportion="0.47611204" vertical-offset="0" max-vertical-offset="2771">
+              <caret line="17" column="26" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -345,7 +325,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -399,27 +379,18 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/p6/Interfaz.java">
+    <entry file="file://$PROJECT_DIR$/src/webservice/XMLParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2176">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#848#856#0" expanded="false" />
-            <element signature="e#1888#2844#0" expanded="false" />
-            <element signature="e#2843#2844#0" expanded="false" />
-            <element signature="e#2875#3880#0" expanded="false" />
-            <element signature="e#3879#3880#0" expanded="false" />
-            <element signature="e#3911#4856#0" expanded="false" />
-            <element signature="e#4855#4856#0" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7021">
+          <caret line="209" column="48" selection-start-line="209" selection-start-column="48" selection-end-line="209" selection-end-column="48" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/webservice/XMLParser.java">
+    <entry file="file://$PROJECT_DIR$/src/p6/Interfaz.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334" vertical-offset="3406" max-vertical-offset="7021">
-          <caret line="212" column="51" selection-start-line="212" selection-start-column="51" selection-end-line="212" selection-end-column="51" />
+        <state vertical-scroll-proportion="0.47611204" vertical-offset="0" max-vertical-offset="2771">
+          <caret line="17" column="26" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
           <folding />
         </state>
       </provider>
