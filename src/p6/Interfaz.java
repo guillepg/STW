@@ -24,6 +24,7 @@ import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
 import org.apache.axis.encoding.XMLType;
 import org.apache.axis.utils.Options;
+import webservice.XMLParser;
 
 import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
@@ -67,8 +68,8 @@ public class Interfaz {
 				//generar json
 				int code = Integer.parseInt(mapa.get(localidades.get(spin.getSelectedIndex())));
 				
-//				String resul = XMLParser.DescargarInfoTiempo(code);
-				String resul ="";
+				String resul = XMLParser.DescargarInfoTiempo(""+code);
+				/*String resul ="";
 				try{
 					Service service = new Service();
 					Call call = (Call) service.createCall();
@@ -84,7 +85,7 @@ public class Interfaz {
 					segundo.getContentPane().add(text,BorderLayout.CENTER); 
 					segundo.setVisible(true); segundo.setLocationRelativeTo(null);
 					
-				}catch(Exception ex){ex.printStackTrace();}
+				}catch(Exception ex){ex.printStackTrace();}*/
 			}			
 		});
 		
