@@ -1,13 +1,14 @@
 package p6;
 /* comentario de andrea */
 
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.Vector;
@@ -71,14 +72,15 @@ public class Interfaz {
 				int code = Integer.parseInt(mapa.get(localidades.get(spin.getSelectedIndex())));
 				
 				String resul = XMLParser.DescargarInfoTiempo(""+code);
-				/*String resul ="";
+
 				try{
+					/*String resul ="";
 					Service service = new Service();
 					Call call = (Call) service.createCall();
 					call.setTargetEndpointAddress(new java.net.URL(endpointURL));
 					call.setOperationName( new QName("Practica6", "main") );
 					resul = (String) call.invoke( new Object[] {""+code, ""+1} );
-					
+					*/
 					JTextArea text = new JTextArea(); 
 					text.setSize(new Dimension(300, 650)); text.setText(resul);
 					
@@ -87,7 +89,7 @@ public class Interfaz {
 					segundo.getContentPane().add(text,BorderLayout.CENTER); 
 					segundo.setVisible(true); segundo.setLocationRelativeTo(null);
 					
-				}catch(Exception ex){ex.printStackTrace();}*/
+				}catch(Exception ex){ex.printStackTrace();}
 			}			
 		});
 		
@@ -144,16 +146,26 @@ public class Interfaz {
 	}
 
 	public static void leerProvincias(){
-		Scanner excel = null;
+		//Scanner excel = null;
+        FileReader fr=null;
+        BufferedReader br=null;
 		try {
-            excel = new Scanner(new File("11codmun50.txt"));
-		    for(int leidos=0;leidos<293;leidos++){
-                String indice = excel.next()+excel.next();
-                excel.next();/*descartamos*/
-                String nombre = excel.nextLine().substring(1);
+            fr=new FileReader("municipios.txt");
+            br=new BufferedReader(fr);
+            String linea=br.readLine();
+            while(linea!=null){
+                String indice = linea.substring(0,2)+linea.substring(3,6);
+                String nombre = linea.substring(9);
+                linea=br.readLine();
                 localidades.add(nombre);
                 mapa.put(nombre, indice);
             }
+            //excel = new Scanner(new File("11codmun50.txt"));
+		    /*for(int leidos=0;leidos<293;leidos++){
+                String indice = excel.next()+excel.next();
+                excel.next();//descartamos el numero de enmedio
+                String nombre = excel.nextLine().substring(1);
+            }*/
         }
         catch (Exception e) {e.printStackTrace();}
 	}
