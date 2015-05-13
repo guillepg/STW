@@ -150,7 +150,7 @@ public class Interfaz {
         FileReader fr=null;
         BufferedReader br=null;
 		try {
-            fr=new FileReader("municipios.txt");
+            fr=new FileReader("resources/municipios.txt");
             br=new BufferedReader(fr);
             String linea=br.readLine();
             while(linea!=null){
