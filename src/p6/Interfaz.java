@@ -1,4 +1,6 @@
 package p6;
+/* comentario de andrea */
+
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
