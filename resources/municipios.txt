@@ -1,0 +1,293 @@
+50	001	6	Abanto
+50	002	1	Acered
+50	003	7	Agon
+50	004	2	Aguaron
+50	005	5	Aguilon
+50	006	8	Ainzon
+50	007	4	Aladren
+50	008	0	Alagon
+50	009	3	Alarba
+50	010	7	Alberite de San Juan
+50	011	4	Albeta
+50	012	9	Alborge
+50	013	5	Alcala de Ebro
+50	014	0	Alcala de Moncayo
+50	015	3	Alconchel de Ariza
+50	016	6	Aldehuela de Liestos
+50	017	2	Alfajarin
+50	018	8	Alfamen
+50	019	1	Alforque
+50	020	5	Alhama de Aragon
+50	021	2	Almochuel
+50	022	7	Almolda, La
+50	023	3	Almonacid de la Cuba
+50	024	8	Almonacid de la Sierra
+50	025	1	Almunia de Dona Godina, La
+50	026	4	Alpartir
+50	027	0	Ambel
+50	028	6	Anento
+50	029	9	Aninon
+50	030	3	Anon de Moncayo
+50	031	0	Aranda de Moncayo
+50	032	5	Arandiga
+50	033	1	Ardisa
+50	034	6	Ariza
+50	035	9	Artieda
+50	036	2	Asin
+50	037	8	Atea
+50	038	4	Ateca
+50	039	7	Azuara
+50	040	1	Badules
+50	041	8	Bagües
+50	042	3	Balconchan
+50	043	9	Barboles
+50	044	4	Bardallur
+50	045	7	Belchite
+50	046	0	Belmonte de Gracian
+50	047	6	Berdejo
+50	048	2	Berrueco
+50	901	7	Biel
+50	050	8	Bijuesca
+50	051	5	Biota
+50	052	0	Bisimbre
+50	053	6	Boquineni
+50	054	1	Bordalba
+50	055	4	Borja
+50	056	7	Botorrita
+50	057	3	Brea de Aragon
+50	058	9	Bubierca
+50	059	2	Bujaraloz
+50	060	6	Bulbuente
+50	061	3	Bureta
+50	062	8	Burgo de Ebro, El
+50	063	4	Buste, El
+50	064	9	Cabanas de Ebro
+50	065	2	Cabolafuente
+50	066	5	Cadrete
+50	067	1	Calatayud
+50	068	7	Calatorao
+50	069	0	Calcena
+50	070	4	Calmarza
+50	071	1	Campillo de Aragon
+50	072	6	Carenas
+50	073	2	Carinena
+50	074	7	Caspe
+50	075	0	Castejon de Alarba
+50	076	3	Castejon de las Armas
+50	077	9	Castejon de Valdejasa
+50	078	5	Castiliscar
+50	079	8	Cervera de la Canada
+50	080	2	Cerveruela
+50	081	9	Cetina
+50	092	2	Chiprana
+50	093	8	Chodes
+50	082	4	Cimballa
+50	083	0	Cinco Olivas
+50	084	5	Clares de Ribota
+50	085	8	Codo
+50	086	1	Codos
+50	087	7	Contamina
+50	088	3	Cosuenda
+50	089	6	Cuarte de Huerva
+50	090	0	Cubel
+50	091	7	Cuerlas, Las
+50	094	3	Daroca
+50	095	6	Ejea de los Caballeros
+50	096	9	Embid de Ariza
+50	098	1	Encinacorba
+50	099	4	epila
+50	100	8	Erla
+50	101	5	Escatron
+50	102	0	Fabara
+50	104	1	Farlete
+50	105	4	Fayon
+50	106	7	Fayos, Los
+50	107	3	Figueruelas
+50	108	9	Fombuena
+50	109	2	Frago, El
+50	110	6	Frasno, El
+50	111	3	Frescano
+50	113	4	Fuendejalon
+50	114	9	Fuendetodos
+50	115	2	Fuentes de Ebro
+50	116	5	Fuentes de Jiloca
+50	117	1	Gallocanta
+50	118	7	Gallur
+50	119	0	Gelsa
+50	120	4	Godojos
+50	121	1	Gotor
+50	122	6	Grisel
+50	123	2	Grisen
+50	124	7	Herrera de los Navarros
+50	125	0	Ibdes
+50	126	3	Illueca
+50	128	5	Isuerre
+50	129	8	Jaraba
+50	130	2	Jarque
+50	131	9	Jaulin
+50	132	4	Joyosa, La
+50	133	0	Lagata
+50	134	5	Langa del Castillo
+50	135	8	Layana
+50	136	1	Lecera
+50	138	3	Lechon
+50	137	7	Lecinena
+50	139	6	Letux
+50	140	0	Litago
+50	141	7	Lituenigo
+50	142	2	Lobera de Onsella
+50	143	8	Longares
+50	144	3	Longas
+50	146	9	Lucena de Jalon
+50	147	5	Luceni
+50	148	1	Luesia
+50	149	4	Luesma
+50	150	7	Lumpiaque
+50	151	4	Luna
+50	152	9	Maella
+50	153	5	Magallon
+50	154	0	Mainar
+50	155	3	Malanquilla
+50	156	6	Malejan
+50	160	5	Mallen
+50	157	2	Malon
+50	159	1	Maluenda
+50	161	2	Manchones
+50	162	7	Mara
+50	163	3	Maria de Huerva
+50	902	2	Marracos
+50	164	8	Mediana de Aragon
+50	165	1	Mequinenza
+50	166	4	Mesones de Isuela
+50	167	0	Mezalocha
+50	168	6	Mianos
+50	169	9	Miedes de Aragon
+50	170	3	Monegrillo
+50	171	0	Moneva
+50	172	5	Monreal de Ariza
+50	173	1	Monterde
+50	174	6	Monton
+50	175	9	Morata de Jalon
+50	176	2	Morata de Jiloca
+50	177	8	Mores
+50	178	4	Moros
+50	179	7	Moyuela
+50	180	1	Mozota
+50	181	8	Muel
+50	182	3	Muela, La
+50	183	9	Munebrega
+50	184	4	Murero
+50	185	7	Murillo de Gallego
+50	186	0	Navardun
+50	187	6	Nigüella
+50	188	2	Nombrevilla
+50	189	5	Nonaspe
+50	190	9	Novallas
+50	191	6	Novillas
+50	192	1	Nuevalos
+50	193	7	Nuez de Ebro
+50	194	2	Olves
+50	195	5	Orcajo
+50	196	8	Orera
+50	197	4	Ores
+50	198	0	Oseja
+50	199	3	Osera de Ebro
+50	200	7	Paniza
+50	201	4	Paracuellos de Jiloca
+50	202	9	Paracuellos de la Ribera
+50	203	5	Pastriz
+50	204	0	Pedrola
+50	205	3	Pedrosas, Las
+50	206	6	Perdiguera
+50	207	2	Piedratajada
+50	208	8	Pina de Ebro
+50	209	1	Pinseque
+50	210	5	Pintanos, Los
+50	211	2	Plasencia de Jalon
+50	212	7	Pleitas
+50	213	3	Plenas
+50	214	8	Pomer
+50	215	1	Pozuel de Ariza
+50	216	4	Pozuelo de Aragon
+50	217	0	Pradilla de Ebro
+50	218	6	Puebla de Alborton
+50	219	9	Puebla de Alfinden, La
+50	220	3	Puendeluna
+50	221	0	Purujosa
+50	222	5	Quinto
+50	223	1	Remolinos
+50	224	6	Retascon
+50	225	9	Ricla
+50	227	8	Romanos
+50	228	4	Rueda de Jalon
+50	229	7	Ruesca
+50	241	6	Sabinan
+50	230	1	Sadaba
+50	231	8	Salillas de Jalon
+50	232	3	Salvatierra de Esca
+50	233	9	Samper del Salz
+50	234	4	San Martin de la Virgen de Moncayo
+50	235	7	San Mateo de Gallego
+50	236	0	Santa Cruz de Grio
+50	237	6	Santa Cruz de Moncayo
+50	238	2	Santa Eulalia de Gallego
+50	239	5	Santed
+50	240	9	Sastago
+50	242	1	Sediles
+50	243	7	Sestrica
+50	244	2	Sierra de Luna
+50	245	5	Sigües
+50	246	8	Sisamon
+50	247	4	Sobradiel
+50	248	0	Sos del Rey Catolico
+50	249	3	Tabuenca
+50	250	6	Talamantes
+50	251	3	Tarazona
+50	252	8	Tauste
+50	253	4	Terrer
+50	254	9	Tierga
+50	255	2	Tobed
+50	256	5	Torralba de los Frailes
+50	257	1	Torralba de Ribota
+50	258	7	Torralbilla
+50	259	0	Torrehermosa
+50	260	4	Torrelapaja
+50	261	1	Torrellas
+50	262	6	Torres de Berrellen
+50	263	2	Torrijo de la Canada
+50	264	7	Tosos
+50	265	0	Trasmoz
+50	266	3	Trasobares
+50	267	9	Uncastillo
+50	268	5	Undues de Lerda
+50	269	8	Urrea de Jalon
+50	270	2	Urries
+50	271	9	Used
+50	272	4	Utebo
+50	274	5	Val de San Martin
+50	273	0	Valdehorna
+50	275	8	Valmadrid
+50	276	1	Valpalmas
+50	277	7	Valtorres
+50	278	3	Velilla de Ebro
+50	279	6	Velilla de Jiloca
+50	280	0	Vera de Moncayo
+50	281	7	Vierlas
+50	283	8	Villadoz
+50	284	3	Villafeliche
+50	285	6	Villafranca de Ebro
+50	286	9	Villalba de Perejil
+50	287	5	Villalengua
+50	903	8	Villamayor de Gallego
+50	288	1	Villanueva de Gallego
+50	290	8	Villanueva de Huerva
+50	289	4	Villanueva de Jiloca
+50	291	5	Villar de los Navarros
+50	292	0	Villarreal de Huerva
+50	293	6	Villarroya de la Sierra
+50	294	1	Villarroya del Campo
+50	282	2	Viluena, La
+50	295	4	Vistabella
+50	296	7	Zaida, La
+50	297	3	Zaragoza
+50	298	9	Zuera

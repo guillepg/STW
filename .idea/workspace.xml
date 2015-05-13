@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7dcc7e25-d864-4bbd-a8ad-a52695a06f36" name="Default" comment="txt en /resources">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+    <list default="true" id="7dcc7e25-d864-4bbd-a8ad-a52695a06f36" name="Default" comment="asdf">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/resources/municipios.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="STW.iws" />
@@ -435,7 +435,13 @@
       <option name="project" value="LOCAL" />
       <updated>1431509028147</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="asdf">
+      <created>1431509378744</created>
+      <option name="number" value="00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1431509378744</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -487,7 +493,8 @@
     <MESSAGE value="primer commit desde intellij" />
     <MESSAGE value="scanner quitado" />
     <MESSAGE value="txt en /resources" />
-    <option name="LAST_COMMIT_MESSAGE" value="txt en /resources" />
+    <MESSAGE value="asdf" />
+    <option name="LAST_COMMIT_MESSAGE" value="asdf" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
