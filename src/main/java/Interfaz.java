@@ -1,4 +1,3 @@
-package p6;
 /* comentario de andrea */
 
 import java.awt.BorderLayout;
@@ -150,7 +149,7 @@ public class Interfaz {
         FileReader fr=null;
         BufferedReader br=null;
 		try {
-            fr=new FileReader("resources/municipios.txt");
+            fr=new FileReader("src/main/resources/municipios.txt");
             br=new BufferedReader(fr);
             String linea=br.readLine();
             while(linea!=null){

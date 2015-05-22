@@ -1,0 +1,45 @@
+body, html {
+	margin: 0px;
+	min-height:100%;
+}
+
+.cont {
+	float: left;
+	background-color: #e8e8e8;
+	margin: 10px;
+	height: 100%;
+}
+
+#bizis {
+	width: 20%;
+}
+
+#map {
+	width: 45%;
+}
+
+#p6 {
+	width: 30%;
+}
+
+.centrar {
+	display: block;
+	margin: 0 auto;
+}
+
+legend {
+	text-align: center;
+}
+
+#tableTiempo {
+	width: inherit;
+	height: 300px;
+	margin-bottom: 20px;
+	background-color: green;
+}
+
+#submit{
+	margin: 10px auto;
+}
+
+
