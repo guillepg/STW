@@ -17,7 +17,7 @@ public class asdfas {
         FileWriter fw=null;
         BufferedWriter bw=null;
         try{
-            Document doc = SAX.build("resources/estacion-bicicleta.xml");
+            Document doc = SAX.build("resources/");
             fw=new FileWriter("resources/texto.txt");
             bw=new BufferedWriter(fw);
             Element raiz = doc.getRootElement();

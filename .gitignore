@@ -345,3 +345,8 @@ nb-configuration.xml
 .nb-gradle/
 
 
+
+src/main/java/AS/Server.java
+src/main/java/AS/Hello.java
+src/main/java/AS/Client.java
+src/main/java/AS/Prueba.java

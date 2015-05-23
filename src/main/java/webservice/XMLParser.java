@@ -204,7 +204,7 @@ public class XMLParser {
 												semana[index_dia].temp[1] = dato.getValue(); break;
 											case "minima": 
 												semana[index_dia].temp[0] = dato.getValue(); break;
-											}							
+											}
 										}
 										break;
 												
