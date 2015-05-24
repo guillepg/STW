@@ -1,0 +1,18 @@
+map = new GMaps({  // muestra mapa centrado en coords [lat, lng]
+	el: '#map',
+	lat: lat,
+	lng: lng,
+	click: enlazarMarcador,
+	tap: enlazarMarcador
+});
+map.addMarker({ lat: lat, lng: lng});  // marcador en [lat, lng]
+
+var mapProp = {
+	center:new google.maps.LatLng(lat, lng),
+	zoom: 7,
+	mapTypeId: google.maps.MapTypeId.ROADMAP
+};
+map = new google.maps.Map(document.getElementById(\"map\"),mapProp);
+
+<iframe height="400px" width="100%" frameborder="0" scrolling="no" src="/maps/documentation/javascript/examples/full/map-simple">
+</iframe>

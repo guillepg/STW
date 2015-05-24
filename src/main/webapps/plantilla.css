@@ -14,8 +14,9 @@ body, html {
 	width: 20%;
 }
 
-#map {
+#mapa {
 	width: 45%;
+	height: 80%;
 }
 
 #p6 {
