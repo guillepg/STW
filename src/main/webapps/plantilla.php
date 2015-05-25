@@ -29,42 +29,76 @@
 	    <div id="mapa" class="cont">
 		<fieldset>
 		<legend>Mapa:</legend>
-        <div id="map">
-		    <?php
-                echo "
-                <script type=\"text/javascript\">
-                    var map, lat, lng, lat1, lng1;
+        <button type="button" id="compactar" align="left"> Compactar ruta</button>
+        <button type="button" id="dibujar" align="right"> Dibujar puntos</button>
+        <div id="map" style="width:600px; height:400px;"></div>
+        <?php
+            echo "
+            <script type=\"text/javascript\">
+                var map, lat, lng, lat1, lng1;
 
-                    $(function(){
-                        $(\"#dibujar\").on('click', crearLista);
-                        $(\"#compactar\").on('click', compactarRuta);
+                $(function(){
 
-                        function geolocalizar(){
-                            GMaps.geolocate({
-                                success: function(position){
-                                    lat = position.coords.latitude;  // guarda coords en lat y lng
-                                    lng = position.coords.longitude;
-                                    $(document).ready(function(){
-                                        map = new GMaps({
-                                            el: '#map',
-                                            lat: lat,
-                                            lng: lng,
-                                            zoom: 12,
-                                            zoomControl : true,
-                                            zoomControlOpt: {
-                                                style : 'SMALL',
-                                                position: 'TOP_LEFT'},
-                                            panControl : false
-                                        });
-                                    });
-                                    console.log(\"mapa creado\");
-                                },
-                                error: function(error) { alert('Geolocalización falla: '+error.message); },
-                                not_supported: function(){ alert(\"Su navegador no soporta geolocalización\"); },
-                            });
-                        };
+                    function geolocalizar(){
+                        GMaps.geolocate({
+                            success: function(position){
+                                //obtenemos la posicion actual
+                                lat = position.coords.latitude;  // guarda coords en lat y lng
+                                lng = position.coords.longitude;
+                                var myLatlng = new google.maps.LatLng(lat, lng);
+                                var myOptions = {
+                                        zoom: 13,
+                                        center: myLatlng,
+                                        mapTypeId: google.maps.MapTypeId.ROADMAP,
+                                    };
+                                map = new google.maps.Map($(\"#map\").get(0), myOptions);
+                                var actual = new google.maps.Marker({
+                                  position: myLatlng,
+                                  map: map,
+                                  title: \"ud. esta aqui\"
+                                });
 
-                        function enlazarMarcador(e){
+                                //generamos la peticion del JSON con las estaciones de bizi
+                                xhttp=new XMLHttpRequest();
+                                xhttp.open(\"GET\",
+                                \"http://www.zaragoza.es/api/recurso/urbanismo-infraestructuras/estacion-bicicleta.json?fl=id,estado,bicisDisponibles,anclajesDisponibles,icon,title,geometry&rows=130&srsname=wgs84\",false);
+                                xhttp.send();
+                                var documento=xhttp.responseText;
+                                var obj = JSON.parse(documento);
+                                var ini = obj.start; var total = obj.rows;
+
+                                for(var line = ini; line < total; line++){
+                                    var lat = obj.result[line].geometry.coordinates[1];
+                                    var lng = obj.result[line].geometry.coordinates[0];
+                                    var pos = new google.maps.LatLng(lat,lng);
+                                    var marker = new google.maps.Marker({
+                                          position: pos,
+                                          map: map,
+                                          title: 'Estacion '+obj.result[line].id+\": \"+obj.result[line].title+
+                                                '   Estado: '+obj.result[line].estado+
+                                                '   Bicis: '+obj.result[line].bicisDisponibles+
+                                                '   Anclajes: '+obj.result[line].anclajesDisponibles,
+                                          icon: \"http://www.zaragoza.es/contenidos/iconos/bizi/conbicis.png\"
+                                      });
+                                    /*map.addMarker({ lat: obj.result[line].geometry.coordinates[1],
+                                                    lng: obj.result[line].geometry.coordinates[0],
+                                                    title: obj.result[line].title,
+                                                    infoWindow: {content:
+                                                        '<p>ID de estacion: '+obj.result[line].id+
+                                                        '</p><p>Ubicacion: '+obj.result[line].title+
+                                                        '</p><p>Estado: '+obj.result[line].estado+
+                                                        '</p><p>Bicis disponibles: '+obj.result[line].bicisDisponibles+
+                                                        '</p><p>Anclajes disponibles: '+obj.result[line].anclajesDisponibles+'</p>'},
+                                                    icon: \"http://www.zaragoza.es/contenidos/iconos/bizi/conbicis.png\"
+                                                    });*/
+                                }
+                            },
+                            error: function(error) { alert('Geolocalización falla: '+error.message); },
+                            not_supported: function(){ alert(\"Su navegador no soporta geolocalización\"); },
+                        });
+                    };
+
+                    function enlazarMarcador(e){
                         // muestra ruta entre marcas anteriores y actuales
                         map.drawRoute({
                             origin: [lat, lng],  // origen en coordenadas anteriores
@@ -75,62 +109,32 @@
                             strokeOpacity: 0.6,
                             strokeWeight: 5
                         });
+                        lat = e.latLng.lat();   // guarda coords para marca siguiente
+                        lng = e.latLng.lng();
 
-                            lat = e.latLng.lat();   // guarda coords para marca siguiente
-                            lng = e.latLng.lng();
+                        map.addMarker({ lat: lat, lng: lng});  // pone marcador en mapa
+                    };
 
-                            map.addMarker({ lat: lat, lng: lng});  // pone marcador en mapa
-                        };
+                    function compactarRuta(){
+                        map.cleanRoute();
+                        map.removeMarkers();
+                        map.addMarker({ lat: lat1, lng: lng1});
+                        map.addMarker({ lat: lat, lng: lng});
+                        map.drawRoute({
+                            origin: [lat1, lng1],
+                            destination: [lat, lng],
+                            travelMode: 'driving',
+                            strokeColor: '#FF0000',
+                            strokeOpacity: 0.8,
+                            strokeWeight: 5
+                        });
+                    }
+                    geolocalizar();
+                });
+            </script>
+            ";
+        ?>
 
-                        function compactarRuta(){
-                            map.cleanRoute();
-                            map.removeMarkers();
-                            map.addMarker({ lat: lat1, lng: lng1});
-                            map.addMarker({ lat: lat, lng: lng});
-                            map.drawRoute({
-                                origin: [lat1, lng1],
-                                destination: [lat, lng],
-                                travelMode: 'driving',
-                                strokeColor: '#FF0000',
-                                strokeOpacity: 0.8,
-                                strokeWeight: 5
-                            });
-                        }
-
-                        function crearLista(e){
-                            xhttp=new XMLHttpRequest();
-                            xhttp.open(\"GET\",
-                            \"http://www.zaragoza.es/api/recurso/urbanismo-infraestructuras/estacion-bicicleta.json?fl=id,estado,bicisDisponibles,anclajesDisponibles,icon,title,geometry&rows=130&srsname=wgs84\",false);
-                            xhttp.send();
-                            var documento=xhttp.responseText;
-                            console.log(\"lista creada\");
-                            dibujarMapa(documento);
-                        }
-
-                        function dibujarMapa(documento){
-                            var obj = JSON.parse(documento);
-                            var ini = obj.start; var total = obj.rows;
-
-                            for(var line = ini; line < total; line++){
-                                map.addMarker({ lat: obj.result[line].geometry.coordinates[1],
-                                                lng: obj.result[line].geometry.coordinates[0],
-                                                title: obj.result[line].title,
-                                                infoWindow: {content:
-                                                    '<p>ID de estacion: '+obj.result[line].id+
-                                                    '</p><p>Ubicacion: '+obj.result[line].title+
-                                                    '</p><p>Estado: '+obj.result[line].estado+
-                                                    '</p><p>Bicis disponibles: '+obj.result[line].bicisDisponibles+
-                                                    '</p><p>Anclajes disponibles: '+obj.result[line].anclajesDisponibles+'</p>'},
-                                                icon: \"http://www.zaragoza.es/contenidos/iconos/bizi/conbicis.png\"
-                                                });
-                            }
-                        };
-                        geolocalizar();
-                    });
-                </script>
-                ";
-            ?>
-        </div>
 		</fieldset>
 	</div>
 	<div id="p6" class="cont">
