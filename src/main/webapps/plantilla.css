@@ -6,21 +6,22 @@ body, html {
 .cont {
 	float: left;
 	background-color: #e8e8e8;
-	margin: 10px;
+	margin: 5px;
 	height: 100%;
 }
 
 #bizis {
-	width: 20%;
+	width: 200px;
 }
 
 #mapa {
-	width: 45%;
-	height: 80%;
+	width: 630px;
+	height: 85%;
 }
 
 #p6 {
-	width: 30%;
+	width: 480px;
+	height: 570px;
 }
 
 .centrar {
@@ -33,14 +34,16 @@ legend {
 }
 
 #tableTiempo {
-	width: inherit;
-	height: 300px;
-	margin-bottom: 20px;
-	background-color: green;
+	width: 450px;
+	height: 450px;
+	text-align: center;
 }
 
 #submit{
 	margin: 10px auto;
 }
 
+#tableTiempo table td {
+	font-size: 13px;
+}
 

@@ -134,21 +134,13 @@
             </script>
             ";
         ?>
-
 		</fieldset>
 	</div>
 	<div id="p6" class="cont">
         <fieldset>
         <legend>Previsión meteorológica:</legend>
         <div id="tableTiempo">
-        <?php
-            //cliente soap que llame a la operacion DescargarInfoTiempo(codigo)
-            //y despues llame a GenerarHTML(xml) e imprima el resultado aquii
-
-        ?>
-        </div>
-        <form method="GET" action="plantilla.php">
-
+        
         <?php
             $fp=fopen("../resources/municipios.txt", "r");
             $linea;
@@ -162,7 +154,42 @@
                 array_push($codigos, $cpro.$mun);
             }
             fclose($fp);
+        //***
+           $codigo=50001;
+		   $munSel;
+		   if(isset($_GET['mun'])){
+                $munSel=$_GET['mun'];
+                $codigo=obtenerCod($munSel, $municipios, $codigos);
+            }
+
+            function obtenerCod($string, $muni, $codi) {
+                $cont=1;
+                foreach($muni as $m){
+                    if($m==$string){
+                        return $codi[$cont];
+                    }
+                    $cont+=1;
+                }
+                return 0;
+            }
+		//**********
+            try{
+				$clienteSOAP = new SoapClient('http://localhost:8080/axis/services/Tiempo?wsdl');
+				
+				$xmlTiempo = $clienteSOAP->DescargarInfoTiempo($codigo);
+				$html = $clienteSOAP->GenerarHTML($xmlTiempo);
+				$json = $clienteSOAP->GenerarJSON($xmlTiempo);
+				echo("<h2>Tiempo en ".$munSel.":</h2>");
+				echo($html);
+			 
+			} catch(SoapFault $e){
+				var_dump($e);
+			}
+
         ?>
+        </div>
+        <form method="GET" action="plantilla.php">
+
 
             <select class="centrar" name="mun">
                 <?php
@@ -174,26 +201,7 @@
             <input id="submit" type="submit" value="Obtener información meteorológica" class="centrar"/>
         </form>
 
-        <?php
-            if(isset($_GET['mun'])){
-                $munSel=$_GET['mun'];
-                echo $munSel;
-                $codigo=obtenerCod($munSel, $municipios, $codigos);
-            }
 
-            function obtenerCod($string, $muni, $codi) {
-                $cont=1;
-                foreach($muni as $m){
-                    if($m==$string){
-                        echo '</br>'.$codi[$cont];
-                        return $cont;
-                    }
-                    $cont+=1;
-                }
-                return 0;
-            }
-
-        ?>
 
         </fieldset>
     </div>
