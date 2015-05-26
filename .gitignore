@@ -346,7 +346,7 @@ nb-configuration.xml
 
 
 
-src/main/java/AS/Server.java
-src/main/java/AS/Hello.java
-src/main/java/AS/Client.java
-src/main/java/AS/Prueba.java
+src/main/java/AS_tutorial_RMI/Server.java
+src/main/java/AS_tutorial_RMI/Hello.java
+src/main/java/AS_tutorial_RMI/Client.java
+src/main/java/AS_tutorial_RMI/Prueba.java
