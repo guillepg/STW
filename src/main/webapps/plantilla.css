@@ -4,9 +4,8 @@ body, html {
 }
 
 .cont {
-	float: left;
 	background-color: #e8e8e8;
-	margin: 5px;
+	margin: 15px;
 	height: 100%;
 }
 
@@ -15,12 +14,14 @@ body, html {
 }
 
 #mapa {
-	width: 630px;
+	float: left;
+	width: 700px;
 	height: 85%;
 }
 
 #p6 {
-	width: 480px;
+	float: left;
+	width: 550px;
 	height: 570px;
 }
 

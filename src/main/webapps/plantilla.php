@@ -10,17 +10,42 @@
 </head>
 <body>
 	<div id="bizis" class="cont">
-		<form method="POST" action="">
+		<form method="POST" action="/ruta">
 		<fieldset>
 		<legend>Bizis:</legend>
 			Dirección:
-			<input type="text" name="direccion"/>
+			<input type="text" name="origen"/>
 			<br><br>
-			<select class="centrar">
-				<option value="estacion1">Estacion1</option>
-				<option value="">Estacion2</option>
-				<option value="">Estacion3</option>
-				<option value="">Estacion4</option>
+			<select class="centrar" id="estaciones" name="destino">
+                <script type="text/javascript"> 
+                    xhttp=new XMLHttpRequest();
+                    xhttp.open('GET', '/estaciones' ,false);
+                    xhttp.send();
+                    var documento=xhttp.responseText;
+                    var obj = JSON.parse(documento);
+                    var estado = obj.estado;
+                    alert(estado);
+
+                    if(estado){         /* creo las opciones del spinner */
+                        var ini = obj.infoBizi.start; var total = obj.infoBizi.rows;
+                        select = document.getElementById("estaciones");
+
+                        for(var line = ini; line < total; line++){
+                            var estacion = obj.infoBizi.result[line].title;
+                            var lat = obj.infoBizi.result[line].geometry.coordinates[1];
+                            var lng = obj.infoBizi.result[line].geometry.coordinates[0];
+                            var opt = document.createElement('option');
+                            alert(lat);
+
+                            opt.value = lat+', '+lng;
+                            opt.innerHTML = estacion;
+                            select.appendChild(opt);
+                        }
+                    }
+
+                    
+                </script>
+				
 			</select>
 			<input id="submit" type="submit" value="Calcula" class="centrar"/>
 		</fieldset>
@@ -61,25 +86,29 @@
                                 //generamos la peticion del JSON con las estaciones de bizi
                                 xhttp=new XMLHttpRequest();
                                 xhttp.open(\"GET\",
-                                \"http://www.zaragoza.es/api/recurso/urbanismo-infraestructuras/estacion-bicicleta.json?fl=id,estado,bicisDisponibles,anclajesDisponibles,icon,title,geometry&rows=130&srsname=wgs84\",false);
+                                \"/estaciones\",false);
                                 xhttp.send();
                                 var documento=xhttp.responseText;
                                 var obj = JSON.parse(documento);
-                                var ini = obj.start; var total = obj.rows;
+                                var estado = obj.estado;
 
-                                for(var line = ini; line < total; line++){
-                                    var lat = obj.result[line].geometry.coordinates[1];
-                                    var lng = obj.result[line].geometry.coordinates[0];
-                                    var pos = new google.maps.LatLng(lat,lng);
-                                    var marker = new google.maps.Marker({
-                                          position: pos,
-                                          map: map,
-                                          title: 'Estacion '+obj.result[line].id+\": \"+obj.result[line].title+
-                                                '   Estado: '+obj.result[line].estado+
-                                                '   Bicis: '+obj.result[line].bicisDisponibles+
-                                                '   Anclajes: '+obj.result[line].anclajesDisponibles,
-                                          icon: \"http://www.zaragoza.es/contenidos/iconos/bizi/conbicis.png\"
-                                      });
+                                if(estado){
+                                    var ini = obj.infoBizi.start; var total = obj.infoBizi.rows;
+
+                                    for(var line = ini; line < total; line++){
+                                        var lat = obj.infoBizi.result[line].geometry.coordinates[1];
+                                        var lng = obj.infoBizi.result[line].geometry.coordinates[0];
+                                        var pos = new google.maps.LatLng(lat,lng);
+                                        var marker = new google.maps.Marker({
+                                              position: pos,
+                                              map: map,
+                                              title: 'Estacion '+obj.infoBizi.result[line].id+\": \"+obj.infoBizi.result[line].title+
+                                                    '   Estado: '+obj.infoBizi.result[line].estado+
+                                                    '   Bicis: '+obj.infoBizi.result[line].bicisDisponibles+
+                                                    '   Anclajes: '+obj.infoBizi.result[line].anclajesDisponibles,
+                                              icon: \"http://www.zaragoza.es/contenidos/iconos/bizi/conbicis.png\"
+                                          });   
+                                }
                                     /*map.addMarker({ lat: obj.result[line].geometry.coordinates[1],
                                                     lng: obj.result[line].geometry.coordinates[0],
                                                     title: obj.result[line].title,
@@ -156,7 +185,7 @@
             fclose($fp);
         //***
            $codigo=50001;
-		   $munSel;
+		   $munSel="Abanto";
 		   if(isset($_GET['mun'])){
                 $munSel=$_GET['mun'];
                 $codigo=obtenerCod($munSel, $municipios, $codigos);
