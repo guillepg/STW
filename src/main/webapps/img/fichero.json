@@ -1,0 +1,182 @@
+[
+  {
+    "fecha": "2015-04-28",
+    "avisos": "18",
+    "eCielo": [
+      "Poco nuboso",
+      "Poco nuboso",
+      "Poco nuboso"
+    ],
+    "viento": [
+      "25",
+      "15",
+      "5"
+    ],
+    "vientoDirec": [
+      "NO",
+      "NO",
+      "O"
+    ],
+    "precip": [
+      "0",
+      "0",
+      "0"
+    ],
+    "cotNieve": [
+      "",
+      "",
+      ""
+    ],
+    "rachaMax": [
+      "55",
+      "",
+      ""
+    ],
+    "tMin": 9,
+    "tMax": 19,
+    "iUV": 7,
+    "periodos": 3
+  },
+  {
+    "fecha": "2015-04-29",
+    "avisos": "0",
+    "eCielo": [
+      "Nuboso con lluvia escasa",
+      "Intervalos nubosos"
+    ],
+    "viento": [
+      "5",
+      "10"
+    ],
+    "vientoDirec": [
+      "O",
+      "NO"
+    ],
+    "precip": [
+      "50",
+      "5"
+    ],
+    "cotNieve": [
+      "2100",
+      ""
+    ],
+    "rachaMax": [
+      "",
+      ""
+    ],
+    "tMin": 9,
+    "tMax": 21,
+    "iUV": 6,
+    "periodos": 2
+  },
+  {
+    "fecha": "2015-04-30",
+    "avisos": "0",
+    "eCielo": [
+      "Muy nuboso",
+      "Nuboso"
+    ],
+    "viento": [
+      "15",
+      "15"
+    ],
+    "vientoDirec": [
+      "O",
+      "NO"
+    ],
+    "precip": [
+      "15",
+      "5"
+    ],
+    "cotNieve": [
+      "2200",
+      ""
+    ],
+    "rachaMax": [
+      "",
+      ""
+    ],
+    "tMin": 11,
+    "tMax": 22,
+    "iUV": 7,
+    "periodos": 2
+  },
+  {
+    "fecha": "2015-05-01",
+    "avisos": "0",
+    "eCielo": [
+      "Cubierto"
+    ],
+    "viento": [
+      "10"
+    ],
+    "vientoDirec": [
+      "O"
+    ],
+    "precip": [
+      "25"
+    ],
+    "cotNieve": [
+      ""
+    ],
+    "rachaMax": [
+      ""
+    ],
+    "tMin": 12,
+    "tMax": 26,
+    "iUV": 8,
+    "periodos": 1
+  },
+  {
+    "fecha": "2015-05-02",
+    "avisos": "0",
+    "eCielo": [
+      "Intervalos nubosos"
+    ],
+    "viento": [
+      "0"
+    ],
+    "vientoDirec": [
+      "C"
+    ],
+    "precip": [
+      "30"
+    ],
+    "cotNieve": [
+      ""
+    ],
+    "rachaMax": [
+      ""
+    ],
+    "tMin": 14,
+    "tMax": 30,
+    "iUV": -1,
+    "periodos": 1
+  },
+  {
+    "fecha": "2015-05-03",
+    "avisos": "0",
+    "eCielo": [
+      "Muy nuboso"
+    ],
+    "viento": [
+      "0"
+    ],
+    "vientoDirec": [
+      "C"
+    ],
+    "precip": [
+      "50"
+    ],
+    "cotNieve": [
+      ""
+    ],
+    "rachaMax": [
+      ""
+    ],
+    "tMin": 18,
+    "tMax": 24,
+    "iUV": -1,
+    "periodos": 1
+  }
+]
