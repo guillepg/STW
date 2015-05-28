@@ -24,7 +24,6 @@
                     var documento=xhttp.responseText;
                     var obj = JSON.parse(documento);
                     var estado = obj.estado;
-                    alert(estado);
 
                     if(estado){         /* creo las opciones del spinner */
                         var ini = obj.infoBizi.start; var total = obj.infoBizi.rows;
@@ -35,7 +34,6 @@
                             var lat = obj.infoBizi.result[line].geometry.coordinates[1];
                             var lng = obj.infoBizi.result[line].geometry.coordinates[0];
                             var opt = document.createElement('option');
-                            alert(lat);
 
                             opt.value = lat+', '+lng;
                             opt.innerHTML = estacion;
@@ -212,7 +210,7 @@
 				echo($html);
 			 
 			} catch(SoapFault $e){
-				var_dump($e);
+				echo "<h3>Error al obtener el tiempo. Prueba mas tarde.</h3>";
 			}
 
         ?>
