@@ -10,17 +10,40 @@
 </head>
 <body>
 	<div id="bizis" class="cont">
-		<form method="POST" action="">
+		<form method="POST" action="/ruta">
 		<fieldset>
 		<legend>Bizis:</legend>
 			Dirección:
-			<input type="text" name="direccion"/>
+			<input type="text" name="origen"/>
 			<br><br>
-			<select class="centrar">
-				<option value="estacion1">Estacion1</option>
-				<option value="">Estacion2</option>
-				<option value="">Estacion3</option>
-				<option value="">Estacion4</option>
+			<select class="centrar" id="estaciones" name="destino">
+                <script type="text/javascript"> 
+                    xhttp=new XMLHttpRequest();
+                    xhttp.open('GET', '/estaciones' ,false);
+                    xhttp.send();
+                    var documento=xhttp.responseText;
+                    var obj = JSON.parse(documento);
+                    var estado = obj.estado;
+
+                    if(estado){         /* creo las opciones del spinner */
+                        var ini = obj.infoBizi.start; var total = obj.infoBizi.rows;
+                        select = document.getElementById("estaciones");
+
+                        for(var line = ini; line < total; line++){
+                            var estacion = obj.infoBizi.result[line].title;
+                            var lat = obj.infoBizi.result[line].geometry.coordinates[1];
+                            var lng = obj.infoBizi.result[line].geometry.coordinates[0];
+                            var opt = document.createElement('option');
+
+                            opt.value = lat+', '+lng;
+                            opt.innerHTML = estacion;
+                            select.appendChild(opt);
+                        }
+                    }
+
+                    
+                </script>
+				
 			</select>
 			<input id="submit" type="submit" value="Calcula" class="centrar"/>
 		</fieldset>
@@ -29,16 +52,15 @@
 	    <div id="mapa" class="cont">
 		<fieldset>
 		<legend>Mapa:</legend>
-        <button type="button" id="direccion" align="left"> Mostrar direccion</button>
-        <div id="map" style="width:600px; height:600px;"></div>
+        <button type="button" id="compactar" align="left"> Compactar ruta</button>
+        <button type="button" id="dibujar" align="right"> Dibujar puntos</button>
+        <div id="map" style="width:600px; height:400px;"></div>
         <?php
             echo "
             <script type=\"text/javascript\">
                 var map, lat, lng, lat1, lng1;
-                var geocoder, origen, destino;
 
                 $(function(){
-                    $(\"#direccion\").on('click', codeAddress);
 
                     function geolocalizar(){
                         GMaps.geolocate({
@@ -47,10 +69,9 @@
                                 lat = position.coords.latitude;  // guarda coords en lat y lng
                                 lng = position.coords.longitude;
                                 var myLatlng = new google.maps.LatLng(lat, lng);
-                                var centro = new google.maps.LatLng(41.656922, -0.878107);
                                 var myOptions = {
                                         zoom: 13,
-                                        center: centro,
+                                        center: myLatlng,
                                         mapTypeId: google.maps.MapTypeId.ROADMAP,
                                     };
                                 map = new google.maps.Map($(\"#map\").get(0), myOptions);
@@ -84,60 +105,25 @@
                                                     '   Bicis: '+obj.infoBizi.result[line].bicisDisponibles+
                                                     '   Anclajes: '+obj.infoBizi.result[line].anclajesDisponibles,
                                               icon: \"http://www.zaragoza.es/contenidos/iconos/bizi/conbicis.png\"
-                                         });
-                                    }
+                                          });   
+                                }
+                                    /*map.addMarker({ lat: obj.result[line].geometry.coordinates[1],
+                                                    lng: obj.result[line].geometry.coordinates[0],
+                                                    title: obj.result[line].title,
+                                                    infoWindow: {content:
+                                                        '<p>ID de estacion: '+obj.result[line].id+
+                                                        '</p><p>Ubicacion: '+obj.result[line].title+
+                                                        '</p><p>Estado: '+obj.result[line].estado+
+                                                        '</p><p>Bicis disponibles: '+obj.result[line].bicisDisponibles+
+                                                        '</p><p>Anclajes disponibles: '+obj.result[line].anclajesDisponibles+'</p>'},
+                                                    icon: \"http://www.zaragoza.es/contenidos/iconos/bizi/conbicis.png\"
+                                                    });*/
                                 }
                             },
                             error: function(error) { alert('Geolocalización falla: '+error.message); },
                             not_supported: function(){ alert(\"Su navegador no soporta geolocalización\"); },
                         });
                     };
-
-                    function codeAddress(e) {
-                        geocoder = new google.maps.Geocoder();
-                        /*------DIRECCION ORIGEN, POR TEXTO------*/
-                        var address = \"Calle Joaquin Costa 18, Zaragoza\"; /*QUITAR DIRECCION HARDCODEADA*/
-                        geocoder.geocode( { 'address': address}, function(results, status) {
-                            if (status == google.maps.GeocoderStatus.OK) {
-                                origen = results[0].geometry.location;
-                                var marker = new google.maps.Marker({
-                                    map: map,
-                                    position: origen
-                                });
-                            } else {
-                                alert(\"Geocode was not successful for the following reason: \" + status);
-                            }
-                        });
-                        /*--------DIRECCION DESTINO, POR SPINNER--------*/
-                        var address2 = \"Plaza San Francisco 1, Zaragoza\"; /*QUITAR DIRECCION HARDCODEADA*/
-                        geocoder.geocode( { 'address': address2}, function(results, status) {
-                            if (status == google.maps.GeocoderStatus.OK) {
-                                destino = results[0].geometry.location;
-                                var marker = new google.maps.Marker({
-                                    map: map,
-                                    position: destino
-                                });
-                            } else {
-                                alert(\"Geocode was not successful for the following reason: \" + status);
-                            }
-                        });
-
-                        /*------DIBUJAR RUTA------*/
-                        var directionsService = new google.maps.DirectionsService();
-                        var directionsDisplay = new google.maps.DirectionsRenderer();
-                        directionsDisplay.setMap(map);
-
-                        var request = {
-                            origin:origen,
-                            destination:destino,
-                            travelMode: google.maps.TravelMode.WALKING
-                        };
-                        directionsService.route(request, function(result, status) {
-                            if (status == google.maps.DirectionsStatus.OK) {
-                                directionsDisplay.setDirections(result);
-                            }
-                        });
-                    }
 
                     function enlazarMarcador(e){
                         // muestra ruta entre marcas anteriores y actuales
@@ -175,21 +161,13 @@
             </script>
             ";
         ?>
-
 		</fieldset>
 	</div>
 	<div id="p6" class="cont">
         <fieldset>
         <legend>Previsión meteorológica:</legend>
         <div id="tableTiempo">
-        <?php
-            //cliente soap que llame a la operacion DescargarInfoTiempo(codigo)
-            //y despues llame a GenerarHTML(xml) e imprima el resultado aquii
-
-        ?>
-        </div>
-        <form method="GET" action="plantilla.php">
-
+        
         <?php
             $fp=fopen("../resources/municipios.txt", "r");
             $linea;
@@ -203,7 +181,42 @@
                 array_push($codigos, $cpro.$mun);
             }
             fclose($fp);
+        //***
+           $codigo=50001;
+		   $munSel="Abanto";
+		   if(isset($_GET['mun'])){
+                $munSel=$_GET['mun'];
+                $codigo=obtenerCod($munSel, $municipios, $codigos);
+            }
+
+            function obtenerCod($string, $muni, $codi) {
+                $cont=1;
+                foreach($muni as $m){
+                    if($m==$string){
+                        return $codi[$cont];
+                    }
+                    $cont+=1;
+                }
+                return 0;
+            }
+		//**********
+            try{
+				$clienteSOAP = new SoapClient('http://localhost:8080/axis/services/Tiempo?wsdl');
+				
+				$xmlTiempo = $clienteSOAP->DescargarInfoTiempo($codigo);
+				$html = $clienteSOAP->GenerarHTML($xmlTiempo);
+				$json = $clienteSOAP->GenerarJSON($xmlTiempo);
+				echo("<h2>Tiempo en ".$munSel.":</h2>");
+				echo($html);
+			 
+			} catch(SoapFault $e){
+				echo "<h3>Error al obtener el tiempo. Prueba mas tarde.</h3>";
+			}
+
         ?>
+        </div>
+        <form method="GET" action="plantilla.php">
+
 
             <select class="centrar" name="mun">
                 <?php
@@ -215,26 +228,7 @@
             <input id="submit" type="submit" value="Obtener información meteorológica" class="centrar"/>
         </form>
 
-        <?php
-            if(isset($_GET['mun'])){
-                $munSel=$_GET['mun'];
-                echo $munSel;
-                $codigo=obtenerCod($munSel, $municipios, $codigos);
-            }
 
-            function obtenerCod($string, $muni, $codi) {
-                $cont=1;
-                foreach($muni as $m){
-                    if($m==$string){
-                        echo '</br>'.$codi[$cont];
-                        return $cont;
-                    }
-                    $cont+=1;
-                }
-                return 0;
-            }
-
-        ?>
 
         </fieldset>
     </div>
