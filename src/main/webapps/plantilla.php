@@ -63,25 +63,29 @@
                                 //generamos la peticion del JSON con las estaciones de bizi
                                 xhttp=new XMLHttpRequest();
                                 xhttp.open(\"GET\",
-                                \"http://www.zaragoza.es/api/recurso/urbanismo-infraestructuras/estacion-bicicleta.json?fl=id,estado,bicisDisponibles,anclajesDisponibles,icon,title,geometry&rows=130&srsname=wgs84\",false);
+                                \"/estaciones\",false);
                                 xhttp.send();
                                 var documento=xhttp.responseText;
                                 var obj = JSON.parse(documento);
-                                var ini = obj.start; var total = obj.rows;
+                                var estado = obj.estado;
 
-                                for(var line = ini; line < total; line++){
-                                    var lat = obj.result[line].geometry.coordinates[1];
-                                    var lng = obj.result[line].geometry.coordinates[0];
-                                    var pos = new google.maps.LatLng(lat,lng);
-                                    var marker = new google.maps.Marker({
-                                          position: pos,
-                                          map: map,
-                                          title: 'Estacion '+obj.result[line].id+\": \"+obj.result[line].title+
-                                                '   Estado: '+obj.result[line].estado+
-                                                '   Bicis: '+obj.result[line].bicisDisponibles+
-                                                '   Anclajes: '+obj.result[line].anclajesDisponibles,
-                                          icon: \"http://www.zaragoza.es/contenidos/iconos/bizi/conbicis.png\"
-                                    });
+                                if(estado){
+                                    var ini = obj.infoBizi.start; var total = obj.infoBizi.rows;
+
+                                    for(var line = ini; line < total; line++){
+                                        var lat = obj.infoBizi.result[line].geometry.coordinates[1];
+                                        var lng = obj.infoBizi.result[line].geometry.coordinates[0];
+                                        var pos = new google.maps.LatLng(lat,lng);
+                                        var marker = new google.maps.Marker({
+                                              position: pos,
+                                              map: map,
+                                              title: 'Estacion '+obj.infoBizi.result[line].id+\": \"+obj.infoBizi.result[line].title+
+                                                    '   Estado: '+obj.infoBizi.result[line].estado+
+                                                    '   Bicis: '+obj.infoBizi.result[line].bicisDisponibles+
+                                                    '   Anclajes: '+obj.infoBizi.result[line].anclajesDisponibles,
+                                              icon: \"http://www.zaragoza.es/contenidos/iconos/bizi/conbicis.png\"
+                                         });
+                                    }
                                 }
                             },
                             error: function(error) { alert('Geolocalización falla: '+error.message); },
