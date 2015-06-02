@@ -288,7 +288,7 @@
 
         ?>
         </div>
-        <form method="GET" action="plantilla.php">
+        <form method="GET" action="/tiempo">
 
 
             <select class="centrar" name="mun">
