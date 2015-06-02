@@ -106,18 +106,7 @@
                                                     '   Anclajes: '+obj.infoBizi.result[line].anclajesDisponibles,
                                               icon: \"http://www.zaragoza.es/contenidos/iconos/bizi/conbicis.png\"
                                           });   
-                                }
-                                    /*map.addMarker({ lat: obj.result[line].geometry.coordinates[1],
-                                                    lng: obj.result[line].geometry.coordinates[0],
-                                                    title: obj.result[line].title,
-                                                    infoWindow: {content:
-                                                        '<p>ID de estacion: '+obj.result[line].id+
-                                                        '</p><p>Ubicacion: '+obj.result[line].title+
-                                                        '</p><p>Estado: '+obj.result[line].estado+
-                                                        '</p><p>Bicis disponibles: '+obj.result[line].bicisDisponibles+
-                                                        '</p><p>Anclajes disponibles: '+obj.result[line].anclajesDisponibles+'</p>'},
-                                                    icon: \"http://www.zaragoza.es/contenidos/iconos/bizi/conbicis.png\"
-                                                    });*/
+                                    }
                                 }
                             },
                             error: function(error) { alert('Geolocalización falla: '+error.message); },
@@ -215,9 +204,7 @@
 
         ?>
         </div>
-        <form method="GET" action="plantilla.php">
-
-
+        <form method="POST" action="/tiempo">
             <select class="centrar" name="mun">
                 <?php
                 foreach($municipios as $res){
@@ -227,9 +214,6 @@
             </select>
             <input id="submit" type="submit" value="Obtener información meteorológica" class="centrar"/>
         </form>
-
-
-
         </fieldset>
     </div>
 

@@ -18,7 +18,7 @@ json:
 
 Si hay algun error:
 json:
-	{'estado': false, 'ip': ___, 'accion': 'ruta', 'fecha': ___}
+	{'estado': false, 'ip': ___, 'accion': 'ruta', 'fecha': ___, 'mensaje': '___'}
 
 
 ***post /tiempo =>
