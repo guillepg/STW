@@ -163,11 +163,19 @@
                     }
                     /*------------------------FUNCION BUENA--------------------------*/
                     function codeAddress2(e) {
+                        xhttp_ip=new XMLHttpRequest();
+                        xhttp_ip.open(\"GET\",\"/ip\",false);
+                        xhttp_ip.send();
+                        var resp_IP=xhttp_ip.responseText;
+                        console.log(\"respuesta IP: \"+resp_IP);
+                        var obj_ip = JSON.parse(resp_IP);
+                        var IP = obj_ip.ip;
+                        console.log(\"/ruta/\"+IP);
+
                         xhttp=new XMLHttpRequest();
-                        xhttp.open(\"GET\",\"ruta.json\",false);
+                        xhttp.open(\"GET\",\"/ruta/\"+IP,false);
                         xhttp.send();
                         var documento=xhttp.responseText;
-                        console.log(documento);
                         var obj = JSON.parse(documento);
                         var estado = obj.estado;
 

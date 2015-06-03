@@ -12,7 +12,7 @@ ParseClient::initialize('7bq4IwmrtKvSA5JbJ3U4u0fOUn5UpCVT7tdoScSR', 'cb3XtgGXzry
 
 //obtener ip de acceso
 $app->get("/ip", function($app) use($app){
-	$data = '{"ip": '.get_real_ip().'}';
+	$data = '{"ip": "'.get_real_ip().'"}';
 	$data = json_decode($data);
     $app->response->headers->set("Content-type", "application/json");
     $app->response->status(200);
