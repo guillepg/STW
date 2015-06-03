@@ -126,6 +126,59 @@ $app->post("/tiempo", function() use($app){
 	$app->redirect('plantilla.php');			//redireccionamos a la pag inicial
 });
 
+//devuelve el número total de acciones (peticiones a /tiempo y a /rutas), el numero de peticiones
+// a /ruta y a /tiempo
+$app->get("/acciones", function() use($app){
+	$query = new ParseQuery("tiempo");
+	$results = $query->find();		//obtengo resultados
+	$numTiempo=count($results);
+
+	$query2 = new ParseQuery("rutas");
+	$results2 = $query2->find();
+	$numRutas=count($results2);
+
+	$total=$numTiempo+$numRutas;
+
+	$data = '{"total": '.$total.', "tiempo": '.$numTiempo.', "rutas": '.$numRutas.'}';
+	$data=json_decode($data);
+	$app->response->headers->set("Content-type", "application/json");
+    $app->response->status(200);
+    $app->response->body(json_encode($data));
+});
+
+//devuelve un listado de ip ordenadas por ultimo acceso 
+//
+$app->get("/ip/:num", function($num) use($app){
+	$query = new ParseQuery("tiempo");
+	$query->descending("createdAt");
+	$results = $query->find();		//obtengo resultados
+	$query2 = new ParseQuery("rutas");
+	$query2->descending("createdAt");
+	$results2 = $query2->find();		//obtengo resultados
+
+	$ip=array();
+
+	if(count($results)==0){
+		echo "no hay resultados";
+	} else{
+		for ($i = 0; $i < count($results); $i++) {
+			array_push($ip, $results[$i]->get("ip"));				//array de ips de acceso a tiempo
+		}
+		for ($i = 0; $i < count($results2); $i++) {
+			array_push($ip, $results2[$i]->get("ip"));				//array de ips de acceso a rutas
+		}
+		
+
+		//terminar
+		
+	}
+
+
+
+	count($results);
+});
+
+
 function getCoordinates($address){
     try{
 	    $address = urlencode($address);
