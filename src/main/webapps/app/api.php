@@ -28,7 +28,7 @@ $app->get("/ruta/:ip", function($ip) use($app){
 	$results = $query->find();		//obtengo resultados
 
 	if(count($results)==0){
-		echo "no hay resultados";
+		$data='{"estado": false }';
 	} else{
 		$reciente=0;
 		for ($i = 0; $i < count($results); $i++) { 		//cojo el mas reciente
@@ -162,8 +162,28 @@ $app->get("/acciones", function() use($app){
     $app->response->body(json_encode($data));
 });
 
+//devuelve el numero de consultas totales, el numero de las bien formadas y de las mal formadas (sobre las rutas)
+$app->get("/consultas", function() use($app){
+	$query = new ParseQuery("rutas");
+	$query->equalTo("estado", "false");
+	$results = $query->find();		//obtengo resultados
+	$numRutasErr=count($results);
+
+	$query = new ParseQuery("rutas");
+	$query->equalTo("estado", "true");
+	$results = $query->find();		//obtengo resultados
+	$numRutasTrue=count($results);
+
+	$numRutasTot=$numRutasErr+$numRutasTrue;
+
+	$data='{"total": '.$numRutasTot', "correctas": '.$numRutasTrue.', "error": '.$numRutasErr.'}';
+});
+
+
+
 //devuelve un listado de ip ordenadas por ultimo acceso 
 //
+/*
 $app->get("/ip/:num", function($num) use($app){
 	$query = new ParseQuery("tiempo");
 	$query->descending("createdAt");
@@ -188,12 +208,35 @@ $app->get("/ip/:num", function($num) use($app){
 		//terminar
 		
 	}
-
-
-
 	count($results);
 });
+*/
 
+//devuelve el numero de visitas tanto a tiempo como a rutas en los ultimos X dias
+$app->get("/visitas/:ndias", function($ndias) use ($app){
+	$query = new ParseQuery("tiempo");
+	$query->descending("createdAt");
+	$results = $query->find();		//obtengo resultados
+
+	$fecha=$results[0]->getCreatedAt();
+	$fecha = date_format($fecha, 'Y-m-d H:i:s');
+	echo $fecha;
+/*
+$reciente=0;
+		for ($i = 0; $i < count($results); $i++) { 		//cojo el mas reciente
+			$object = $results[$i];
+			$fecha = date_format($object->getCreatedAt(), 'Y-m-d H:i:s');
+
+			if($fecha>date_format($results[$reciente]->getCreatedAt(), 'Y-m-d H:i:s')){
+				$reciente=$i;
+			}
+			
+		}
+		$object=$results[$reciente];
+
+*/
+
+});
 
 function getCoordinates($address){
     try{
