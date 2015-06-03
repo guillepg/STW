@@ -80,7 +80,7 @@
                               map: map,
                               title: \"ud. esta aqui\"
                             });
-
+							
                             //generamos la peticion del JSON con las estaciones de bizi
                             xhttp=new XMLHttpRequest();
                             xhttp.open(\"GET\",\"/estaciones\",false);
@@ -288,9 +288,7 @@
 
         ?>
         </div>
-        <form method="GET" action="/tiempo">
-
-
+        <form method="POST" action="/tiempo">
             <select class="centrar" name="mun">
                 <?php
                 foreach($municipios as $res){
@@ -300,9 +298,6 @@
             </select>
             <input id="submit" type="submit" value="Obtener información meteorológica" class="centrar"/>
         </form>
-
-
-
         </fieldset>
     </div>
 
