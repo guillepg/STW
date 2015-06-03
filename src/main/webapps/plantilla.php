@@ -9,14 +9,14 @@
     <script type="text/javascript" src="gmaps.js"></script>
 </head>
 <body>
-	<div id="bizis" class="cont">
-		<form method="POST" action="/ruta">
-		<fieldset>
-		<legend>Bizis:</legend>
-			Dirección:
-			<input type="text" name="origen"/>
-			<br><br>
-			<select class="centrar" id="estaciones" name="destino">
+    <div id="bizis" class="cont">
+        <form method="POST" action="/ruta">
+        <fieldset>
+        <legend>Bizis:</legend>
+            Dirección:
+            <input type="text" name="origen"/>
+            <br><br>
+            <select class="centrar" id="estaciones" name="destino">
                 <script type="text/javascript"> 
                     xhttp=new XMLHttpRequest();
                     xhttp.open('GET', '/estaciones' ,false);
@@ -24,7 +24,6 @@
                     var documento=xhttp.responseText;
                     var obj = JSON.parse(documento);
                     var estado = obj.estado;
-
                     if(estado){         /* creo las opciones del spinner */
                         var ini = obj.infoBizi.start; var total = obj.infoBizi.totalCount;
                         select = document.getElementById("estaciones");
@@ -33,31 +32,29 @@
                             var lat = obj.infoBizi.result[line].geometry.coordinates[1];
                             var lng = obj.infoBizi.result[line].geometry.coordinates[0];
                             var opt = document.createElement('option');
-
-                            opt.value = lat+', '+lng;
+                            opt.value = lat+', '+lng+', '+estacion;
                             opt.innerHTML = estacion;
                             select.appendChild(opt);
                         }
                     }
                     
                 </script>
-				
-			</select>
-			<input id="submit" type="submit" value="Calcula" class="centrar"/>
-		</fieldset>
-		</form>
-	</div>
-	    <div id="mapa" class="cont">
-		<fieldset>
-		<legend>Mapa:</legend>
-		<button type="button" id="mostrar" align="center"> Mostrar ruta </button>
+                
+            </select>
+            <input id="submit" type="submit" value="Calcula" class="centrar"/>
+        </fieldset>
+        </form>
+    </div>
+        <div id="mapa" class="cont">
+        <fieldset>
+        <legend>Mapa:</legend>
+        <button type="button" id="mostrar" align="center"> Mostrar ruta </button>
         <div id="map" style="width:600px; height:400px;"></div>
         <?php
             echo "
             <script type=\"text/javascript\">
                 var map, lat, lng, lat1, lng1;
                 var geocoder, origen, destino;
-
                 $(function(){
                     $(\"#mostrar\").on('click', codeAddress2);
                     function geolocalizar(){
@@ -78,7 +75,7 @@
                               map: map,
                               title: \"ud. esta aqui\"
                             });
-							
+                            
                             //generamos la peticion del JSON con las estaciones de bizi
                             xhttp=new XMLHttpRequest();
                             xhttp.open(\"GET\",\"/estaciones\",false);
@@ -86,7 +83,6 @@
                             var documento=xhttp.responseText;
                             var obj = JSON.parse(documento);
                             var estado = obj.estado;
-
                             if(estado){
                                 var ini = obj.infoBizi.start; var total = obj.infoBizi.totalCount;
                                 for(var line = ini; line < total; line++){
@@ -108,7 +104,6 @@
                             not_supported: function(){ alert(\"Su navegador no soporta geolocalización\"); },
                         });
                     };
-
                     /*------------------------FUNCION BUENA--------------------------*/
                     function codeAddress2(e) {
                         console.log(\"dibujo\");
@@ -118,7 +113,6 @@
                         var resp_ip=xhttp_ip.responseText;
                         var obj_ip = JSON.parse(resp_ip);
                         var ip = obj_ip.ip;
-
                         xhttp=new XMLHttpRequest();
                         xhttp.open(\"GET\",\"/ruta/\"+ip,false);
                         xhttp.send();
@@ -162,9 +156,9 @@
             </script>
             ";
         ?>
-		</fieldset>
-	</div>
-	<div id="p6" class="cont">
+        </fieldset>
+    </div>
+    <div id="p6" class="cont">
         <fieldset>
         <legend>Previsión meteorológica:</legend>
         <div id="tableTiempo">
@@ -174,22 +168,19 @@
             $linea;
             $municipios=array();
             $codigos=array();
-
             while( ($linea=fgets($fp)) !== false ){
                 list($cpro, $mun, $dc, $nombre)=split("[\r\t]+", $linea);
-
                 array_push($municipios, $nombre);
                 array_push($codigos, $cpro.$mun);
             }
             fclose($fp);
         //***
            $codigo=50001;
-		   $munSel="Abanto";
-		   if(isset($_GET['mun'])){
+           $munSel="Abanto";
+           if(isset($_GET['mun'])){
                 $munSel=$_GET['mun'];
                 $codigo=obtenerCod($munSel, $municipios, $codigos);
             }
-
             function obtenerCod($string, $muni, $codi) {
                 $cont=1;
                 foreach($muni as $m){
@@ -200,20 +191,19 @@
                 }
                 return 0;
             }
-		//**********
+        //**********
             try{
-				$clienteSOAP = new SoapClient('http://localhost:8080/axis/services/Tiempo?wsdl');
-				
-				$xmlTiempo = $clienteSOAP->DescargarInfoTiempo($codigo);
-				$html = $clienteSOAP->GenerarHTML($xmlTiempo);
-				$json = $clienteSOAP->GenerarJSON($xmlTiempo);
-				echo("<h2>Tiempo en ".$munSel.":</h2>");
-				echo($html);
-			 
-			} catch(SoapFault $e){
-				echo "<h3>Error al obtener el tiempo. Prueba mas tarde.</h3>";
-			}
-
+                $clienteSOAP = new SoapClient('http://localhost:8080/axis/services/Tiempo?wsdl');
+                
+                $xmlTiempo = $clienteSOAP->DescargarInfoTiempo($codigo);
+                $html = $clienteSOAP->GenerarHTML($xmlTiempo);
+                $json = $clienteSOAP->GenerarJSON($xmlTiempo);
+                echo("<h2>Tiempo en ".$munSel.":</h2>");
+                echo($html);
+             
+            } catch(SoapFault $e){
+                echo "<h3>Error al obtener el tiempo. Prueba mas tarde.</h3>";
+            }
         ?>
         </div>
         <form method="POST" action="/tiempo">
