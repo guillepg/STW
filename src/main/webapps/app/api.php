@@ -11,7 +11,7 @@ use Parse\ParseQuery;
 ParseClient::initialize('7bq4IwmrtKvSA5JbJ3U4u0fOUn5UpCVT7tdoScSR', 'cb3XtgGXzryvfzYq9lro6CyBCUtL04CheKAJ4Nf6', 'negMQABtG0Ha0fJnXVbqr9UxMOLSQOuNyN6qIK6p');
 
 //obtener ip de acceso
-$app->get("/ip", function($app) use($app){
+$app->get("/ip", function() use($app){
 	$data = '{"ip": "'.get_real_ip().'"}';
 	$data = json_decode($data);
     $app->response->headers->set("Content-type", "application/json");
@@ -28,7 +28,7 @@ $app->get("/ruta/:ip", function($ip) use($app){
 	$results = $query->find();		//obtengo resultados
 
 	if(count($results)==0){
-		echo "no hay resultados";
+		$data='{"estado": false }';
 	} else{
 		$reciente=0;
 		for ($i = 0; $i < count($results); $i++) { 		//cojo el mas reciente
@@ -42,7 +42,7 @@ $app->get("/ruta/:ip", function($ip) use($app){
 		}
 		$object=$results[$reciente];
 
-		$data='{"estado": true, "origen": {"lat": '.$object->get('origenlat').', "long": '.$object->get('origenlong').'}, "destino": {"lat": "'.$object->get('destinolat').'", "long": "'.$object->get('destinolong').'"}}';
+		$data='{"estado": true, "origen": {"lat": '.$object->get('origenlat').', "long": '.$object->get('origenlong').'}, "destino": {"lat": '.$object->get('destinolat').', "long": '.$object->get('destinolong').'}}';
 	}
 
 	$data = json_decode($data);
@@ -162,8 +162,28 @@ $app->get("/acciones", function() use($app){
     $app->response->body(json_encode($data));
 });
 
+//devuelve el numero de consultas totales, el numero de las bien formadas y de las mal formadas (sobre las rutas)
+$app->get("/consultas", function() use($app){
+	$query = new ParseQuery("rutas");
+	$query->equalTo("estado", "false");
+	$results = $query->find();		//obtengo resultados
+	$numRutasErr=count($results);
+
+	$query = new ParseQuery("rutas");
+	$query->equalTo("estado", "true");
+	$results = $query->find();		//obtengo resultados
+	$numRutasTrue=count($results);
+
+	$numRutasTot=$numRutasErr+$numRutasTrue;
+
+	$data='{"total": '.$numRutasTot', "correctas": '.$numRutasTrue.', "error": '.$numRutasErr.'}';
+});
+
+
+
 //devuelve un listado de ip ordenadas por ultimo acceso 
 //
+/*
 $app->get("/ip/:num", function($num) use($app){
 	$query = new ParseQuery("tiempo");
 	$query->descending("createdAt");
@@ -188,12 +208,35 @@ $app->get("/ip/:num", function($num) use($app){
 		//terminar
 		
 	}
-
-
-
 	count($results);
 });
+*/
 
+//devuelve el numero de visitas tanto a tiempo como a rutas en los ultimos X dias
+$app->get("/visitas/:ndias", function($ndias) use ($app){
+	$query = new ParseQuery("tiempo");
+	$query->descending("createdAt");
+	$results = $query->find();		//obtengo resultados
+
+	$fecha=$results[0]->getCreatedAt();
+	$fecha = date_format($fecha, 'Y-m-d H:i:s');
+	echo $fecha;
+/*
+$reciente=0;
+		for ($i = 0; $i < count($results); $i++) { 		//cojo el mas reciente
+			$object = $results[$i];
+			$fecha = date_format($object->getCreatedAt(), 'Y-m-d H:i:s');
+
+			if($fecha>date_format($results[$reciente]->getCreatedAt(), 'Y-m-d H:i:s')){
+				$reciente=$i;
+			}
+			
+		}
+		$object=$results[$reciente];
+
+*/
+
+});
 
 function getCoordinates($address){
     try{
