@@ -26,9 +26,8 @@
                     var estado = obj.estado;
 
                     if(estado){         /* creo las opciones del spinner */
-                        var ini = obj.infoBizi.start; var total = obj.infoBizi.rows;
+                        var ini = obj.infoBizi.start; var total = obj.infoBizi.totalCount;
                         select = document.getElementById("estaciones");
-
                         for(var line = ini; line < total; line++){
                             var estacion = obj.infoBizi.result[line].title;
                             var lat = obj.infoBizi.result[line].geometry.coordinates[1];
@@ -51,8 +50,7 @@
 	    <div id="mapa" class="cont">
 		<fieldset>
 		<legend>Mapa:</legend>
-        <button type="button" id="compactar" align="left"> Compactar ruta</button>
-        <button type="button" id="dibujar" align="right"> Dibujar puntos</button>
+		<button type="button" id="mostrar" align="center"> Mostrar ruta </button>
         <div id="map" style="width:600px; height:400px;"></div>
         <?php
             echo "
@@ -61,9 +59,9 @@
                 var geocoder, origen, destino;
 
                 $(function(){
-                    $(\"#dibujar\").on('click', codeAddress2);
-
+                    $(\"#mostrar\").on('click', codeAddress2);
                     function geolocalizar(){
+                        console.log(\"geolocalizo\");
                         GMaps.geolocate({success: function(position){
                             //obtenemos la posicion actual
                             lat = position.coords.latitude;  // guarda coords en lat y lng
@@ -90,8 +88,7 @@
                             var estado = obj.estado;
 
                             if(estado){
-                                var ini = obj.infoBizi.start; var total = obj.infoBizi.rows;
-
+                                var ini = obj.infoBizi.start; var total = obj.infoBizi.totalCount;
                                 for(var line = ini; line < total; line++){
                                     var lat = obj.infoBizi.result[line].geometry.coordinates[1];
                                     var lng = obj.infoBizi.result[line].geometry.coordinates[0];
@@ -112,76 +109,28 @@
                         });
                     };
 
-                    function codeAddress(e) {
-                        console.log(\"holis\");
-                        geocoder = new google.maps.Geocoder();
-                        /*------DIRECCION ORIGEN------*/
-                        var address = \"Via de la Hispanidad 120, Zaragoza\"; /*QUITAR DIRECCION HARDCODEADA*/
-                        geocoder.geocode( { 'address': address}, function(results, status) {
-                            if (status == google.maps.GeocoderStatus.OK) {
-                                origen = results[0].geometry.location;
-                                var marker = new google.maps.Marker({
-                                    map: map,
-                                    position: origen
-                                });
-                            } else {
-                                alert(\"Geocode was not successful for the following reason: \" + status);
-                            }
-                        });
-                        /*--------DIRECCION DESTINO--------*/
-                        var address2 = \"Plaza San Francisco 1, Zaragoza\"; /*QUITAR DIRECCION HARDCODEADA*/
-                        geocoder.geocode( { 'address': address2}, function(results2, status) {
-                            if (status == google.maps.GeocoderStatus.OK) {
-                                destino = results2[0].geometry.location;
-                                var marker = new google.maps.Marker({
-                                    map: map,
-                                    position: destino
-                                });
-                            } else {
-                                alert(\"Geocode was not successful for the following reason: \" + status);
-                            }
-                        });
-
-                        /*------DIBUJAR RUTA------*/
-                        var directionsService = new google.maps.DirectionsService();
-                        var directionsDisplay = new google.maps.DirectionsRenderer();
-                        directionsDisplay.setMap(map);
-
-                        console.log(\"traza 1\");
-
-                        var request = {
-                            origin:origen,
-                            destination:destino,
-                            travelMode: google.maps.TravelMode.WALKING
-                        };
-                        console.log(\"traza 2\");
-                        directionsService.route(request, function(result, status) {
-                            if (status == google.maps.DirectionsStatus.OK) {
-                                directionsDisplay.setDirections(result);
-                            }
-                        });
-                    }
                     /*------------------------FUNCION BUENA--------------------------*/
                     function codeAddress2(e) {
+                        console.log(\"dibujo\");
                         xhttp_ip=new XMLHttpRequest();
                         xhttp_ip.open(\"GET\",\"/ip\",false);
                         xhttp_ip.send();
-                        var resp_IP=xhttp_ip.responseText;
-                        console.log(\"respuesta IP: \"+resp_IP);
-                        var obj_ip = JSON.parse(resp_IP);
-                        var IP = obj_ip.ip;
-                        console.log(\"/ruta/\"+IP);
+                        var resp_ip=xhttp_ip.responseText;
+                        var obj_ip = JSON.parse(resp_ip);
+                        var ip = obj_ip.ip;
 
                         xhttp=new XMLHttpRequest();
-                        xhttp.open(\"GET\",\"/ruta/\"+IP,false);
+                        xhttp.open(\"GET\",\"/ruta/\"+ip,false);
                         xhttp.send();
                         var documento=xhttp.responseText;
                         var obj = JSON.parse(documento);
                         var estado = obj.estado;
-
+                        console.log(obj.estado);
+                        console.log(obj.origen);
+                        console.log(obj.destino);
                         if(estado){
-                            var orig = new google.maps.LatLng(obj.origen.lat, obj.origen.lng);
-                            var dest = new google.maps.LatLng(obj.destino.lat, obj.destino.lng);
+                            var orig = new google.maps.LatLng(obj.origen.lat, obj.origen.long);
+                            var dest = new google.maps.LatLng(obj.destino.lat, obj.destino.long);
                             var marker = new google.maps.Marker({
                                 map: map,
                                 position: orig
@@ -190,6 +139,7 @@
                                 map: map,
                                 position: dest
                             });
+                            console.log(\"marcadores creados\");
                             var directionsService = new google.maps.DirectionsService();
                             var directionsDisplay = new google.maps.DirectionsRenderer();
                             directionsDisplay.setMap(map);
@@ -198,44 +148,14 @@
                                 destination: dest,
                                 travelMode: google.maps.TravelMode.WALKING
                             };
+                            console.log(\"request creada\");
                             directionsService.route(request, function(result, status) {
                                 if (status == google.maps.DirectionsStatus.OK) {
                                     directionsDisplay.setDirections(result);
                                 }
                             });
+                            console.log(\"todo dibujado\");
                         }
-                    }
-
-                    function enlazarMarcador(e){
-                        // muestra ruta entre marcas anteriores y actuales
-                        map.drawRoute({
-                            origin: [lat, lng],  // origen en coordenadas anteriores
-                            // destino en coordenadas del click o toque actual
-                            destination: [e.latLng.lat(), e.latLng.lng()],
-                            travelMode: 'driving',
-                            strokeColor: '#000000',
-                            strokeOpacity: 0.6,
-                            strokeWeight: 5
-                        });
-                        lat = e.latLng.lat();   // guarda coords para marca siguiente
-                        lng = e.latLng.lng();
-
-                        map.addMarker({ lat: lat, lng: lng});  // pone marcador en mapa
-                    };
-
-                    function compactarRuta(){
-                        map.cleanRoute();
-                        map.removeMarkers();
-                        map.addMarker({ lat: lat1, lng: lng1});
-                        map.addMarker({ lat: lat, lng: lng});
-                        map.drawRoute({
-                            origin: [lat1, lng1],
-                            destination: [lat, lng],
-                            travelMode: 'driving',
-                            strokeColor: '#FF0000',
-                            strokeOpacity: 0.8,
-                            strokeWeight: 5
-                        });
                     }
                     geolocalizar();
                 });

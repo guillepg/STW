@@ -11,7 +11,7 @@ use Parse\ParseQuery;
 ParseClient::initialize('7bq4IwmrtKvSA5JbJ3U4u0fOUn5UpCVT7tdoScSR', 'cb3XtgGXzryvfzYq9lro6CyBCUtL04CheKAJ4Nf6', 'negMQABtG0Ha0fJnXVbqr9UxMOLSQOuNyN6qIK6p');
 
 //obtener ip de acceso
-$app->get("/ip", function($app) use($app){
+$app->get("/ip", function() use($app){
 	$data = '{"ip": "'.get_real_ip().'"}';
 	$data = json_decode($data);
     $app->response->headers->set("Content-type", "application/json");
@@ -42,7 +42,7 @@ $app->get("/ruta/:ip", function($ip) use($app){
 		}
 		$object=$results[$reciente];
 
-		$data='{"estado": true, "origen": {"lat": '.$object->get('origenlat').', "long": '.$object->get('origenlong').'}, "destino": {"lat": "'.$object->get('destinolat').'", "long": "'.$object->get('destinolong').'"}}';
+		$data='{"estado": true, "origen": {"lat": '.$object->get('origenlat').', "long": '.$object->get('origenlong').'}, "destino": {"lat": '.$object->get('destinolat').', "long": '.$object->get('destinolong').'}}';
 	}
 
 	$data = json_decode($data);
