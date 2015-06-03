@@ -40,7 +40,6 @@
                             select.appendChild(opt);
                         }
                     }
-
                     
                 </script>
 				
@@ -59,60 +58,145 @@
             echo "
             <script type=\"text/javascript\">
                 var map, lat, lng, lat1, lng1;
+                var geocoder, origen, destino;
 
                 $(function(){
+                    $(\"#dibujar\").on('click', codeAddress2);
 
                     function geolocalizar(){
-                        GMaps.geolocate({
-                            success: function(position){
-                                //obtenemos la posicion actual
-                                lat = position.coords.latitude;  // guarda coords en lat y lng
-                                lng = position.coords.longitude;
-                                var myLatlng = new google.maps.LatLng(lat, lng);
-                                var myOptions = {
-                                        zoom: 13,
-                                        center: myLatlng,
-                                        mapTypeId: google.maps.MapTypeId.ROADMAP,
-                                    };
-                                map = new google.maps.Map($(\"#map\").get(0), myOptions);
-                                var actual = new google.maps.Marker({
-                                  position: myLatlng,
-                                  map: map,
-                                  title: \"ud. esta aqui\"
-                                });
+                        GMaps.geolocate({success: function(position){
+                            //obtenemos la posicion actual
+                            lat = position.coords.latitude;  // guarda coords en lat y lng
+                            lng = position.coords.longitude;
+                            var myLatlng = new google.maps.LatLng(lat, lng);
+                            var myOptions = {
+                                    zoom: 13,
+                                    center: myLatlng,
+                                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                                };
+                            map = new google.maps.Map($(\"#map\").get(0), myOptions);
+                            var actual = new google.maps.Marker({
+                              position: myLatlng,
+                              map: map,
+                              title: \"ud. esta aqui\"
+                            });
+							
+                            //generamos la peticion del JSON con las estaciones de bizi
+                            xhttp=new XMLHttpRequest();
+                            xhttp.open(\"GET\",\"/estaciones\",false);
+                            xhttp.send();
+                            var documento=xhttp.responseText;
+                            var obj = JSON.parse(documento);
+                            var estado = obj.estado;
 
-                                //generamos la peticion del JSON con las estaciones de bizi
-                                xhttp=new XMLHttpRequest();
-                                xhttp.open(\"GET\",
-                                \"/estaciones\",false);
-                                xhttp.send();
-                                var documento=xhttp.responseText;
-                                var obj = JSON.parse(documento);
-                                var estado = obj.estado;
+                            if(estado){
+                                var ini = obj.infoBizi.start; var total = obj.infoBizi.rows;
 
-                                if(estado){
-                                    var ini = obj.infoBizi.start; var total = obj.infoBizi.rows;
-
-                                    for(var line = ini; line < total; line++){
-                                        var lat = obj.infoBizi.result[line].geometry.coordinates[1];
-                                        var lng = obj.infoBizi.result[line].geometry.coordinates[0];
-                                        var pos = new google.maps.LatLng(lat,lng);
-                                        var marker = new google.maps.Marker({
-                                              position: pos,
-                                              map: map,
-                                              title: 'Estacion '+obj.infoBizi.result[line].id+\": \"+obj.infoBizi.result[line].title+
-                                                    '   Estado: '+obj.infoBizi.result[line].estado+
-                                                    '   Bicis: '+obj.infoBizi.result[line].bicisDisponibles+
-                                                    '   Anclajes: '+obj.infoBizi.result[line].anclajesDisponibles,
-                                              icon: \"http://www.zaragoza.es/contenidos/iconos/bizi/conbicis.png\"
-                                          });   
-                                    }
+                                for(var line = ini; line < total; line++){
+                                    var lat = obj.infoBizi.result[line].geometry.coordinates[1];
+                                    var lng = obj.infoBizi.result[line].geometry.coordinates[0];
+                                    var pos = new google.maps.LatLng(lat,lng);
+                                    var marker = new google.maps.Marker({
+                                          position: pos,
+                                          map: map,
+                                          title: 'Estacion '+obj.infoBizi.result[line].id+\": \"+obj.infoBizi.result[line].title+
+                                                '   Estado: '+obj.infoBizi.result[line].estado+
+                                                '   Bicis: '+obj.infoBizi.result[line].bicisDisponibles+
+                                                '   Anclajes: '+obj.infoBizi.result[line].anclajesDisponibles,
+                                          icon: \"http://www.zaragoza.es/contenidos/iconos/bizi/conbicis.png\"
+                                      });
                                 }
-                            },
-                            error: function(error) { alert('Geolocalización falla: '+error.message); },
+                            }
+                            },error: function(error) { alert('Geolocalización falla: '+error.message); },
                             not_supported: function(){ alert(\"Su navegador no soporta geolocalización\"); },
                         });
                     };
+
+                    function codeAddress(e) {
+                        console.log(\"holis\");
+                        geocoder = new google.maps.Geocoder();
+                        /*------DIRECCION ORIGEN------*/
+                        var address = \"Via de la Hispanidad 120, Zaragoza\"; /*QUITAR DIRECCION HARDCODEADA*/
+                        geocoder.geocode( { 'address': address}, function(results, status) {
+                            if (status == google.maps.GeocoderStatus.OK) {
+                                origen = results[0].geometry.location;
+                                var marker = new google.maps.Marker({
+                                    map: map,
+                                    position: origen
+                                });
+                            } else {
+                                alert(\"Geocode was not successful for the following reason: \" + status);
+                            }
+                        });
+                        /*--------DIRECCION DESTINO--------*/
+                        var address2 = \"Plaza San Francisco 1, Zaragoza\"; /*QUITAR DIRECCION HARDCODEADA*/
+                        geocoder.geocode( { 'address': address2}, function(results2, status) {
+                            if (status == google.maps.GeocoderStatus.OK) {
+                                destino = results2[0].geometry.location;
+                                var marker = new google.maps.Marker({
+                                    map: map,
+                                    position: destino
+                                });
+                            } else {
+                                alert(\"Geocode was not successful for the following reason: \" + status);
+                            }
+                        });
+
+                        /*------DIBUJAR RUTA------*/
+                        var directionsService = new google.maps.DirectionsService();
+                        var directionsDisplay = new google.maps.DirectionsRenderer();
+                        directionsDisplay.setMap(map);
+
+                        console.log(\"traza 1\");
+
+                        var request = {
+                            origin:origen,
+                            destination:destino,
+                            travelMode: google.maps.TravelMode.WALKING
+                        };
+                        console.log(\"traza 2\");
+                        directionsService.route(request, function(result, status) {
+                            if (status == google.maps.DirectionsStatus.OK) {
+                                directionsDisplay.setDirections(result);
+                            }
+                        });
+                    }
+                    /*------------------------FUNCION BUENA--------------------------*/
+                    function codeAddress2(e) {
+                        xhttp=new XMLHttpRequest();
+                        xhttp.open(\"GET\",\"ruta.json\",false);
+                        xhttp.send();
+                        var documento=xhttp.responseText;
+                        console.log(documento);
+                        var obj = JSON.parse(documento);
+                        var estado = obj.estado;
+
+                        if(estado){
+                            var orig = new google.maps.LatLng(obj.origen.lat, obj.origen.lng);
+                            var dest = new google.maps.LatLng(obj.destino.lat, obj.destino.lng);
+                            var marker = new google.maps.Marker({
+                                map: map,
+                                position: orig
+                            });
+                            var marker = new google.maps.Marker({
+                                map: map,
+                                position: dest
+                            });
+                            var directionsService = new google.maps.DirectionsService();
+                            var directionsDisplay = new google.maps.DirectionsRenderer();
+                            directionsDisplay.setMap(map);
+                            var request = {
+                                origin: orig,
+                                destination: dest,
+                                travelMode: google.maps.TravelMode.WALKING
+                            };
+                            directionsService.route(request, function(result, status) {
+                                if (status == google.maps.DirectionsStatus.OK) {
+                                    directionsDisplay.setDirections(result);
+                                }
+                            });
+                        }
+                    }
 
                     function enlazarMarcador(e){
                         // muestra ruta entre marcas anteriores y actuales

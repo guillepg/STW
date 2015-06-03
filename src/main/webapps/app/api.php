@@ -126,6 +126,22 @@ $app->post("/tiempo", function() use($app){
 	$app->redirect('plantilla.php');			//redireccionamos a la pag inicial
 });
 
+//guardar informacion sobre la peticion de la muestra de informacion del tiempo
+$app->post("/tiempo", function() use($app){
+	$ip = get_real_ip();
+	$datosform=$app->request;
+	$municipio = $datosform->post('mun');
+
+	$tiempo = ParseObject::create("tiempo");		//se crea un objeto de la clase tiempo
+	$tiempo->set("ip", $ip);
+	$tiempo->set("ciudad", $municipio);
+
+	try {
+		$tiempo->save();
+	} catch (ParseException $ex) {  }
+	$app->redirect('plantilla.php');			//redireccionamos a la pag inicial
+});
+
 //devuelve el número total de acciones (peticiones a /tiempo y a /rutas), el numero de peticiones
 // a /ruta y a /tiempo
 $app->get("/acciones", function() use($app){
