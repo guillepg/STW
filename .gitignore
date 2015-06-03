@@ -6,7 +6,7 @@ gradle-app.setting
 
 ### Eclipse template
 *.pydevproject
-.metadata
+.metadata 
 bin/
 tmp/
 *.tmp
