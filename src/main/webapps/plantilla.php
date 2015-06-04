@@ -9,42 +9,6 @@
     <script type="text/javascript" src="gmaps.js"></script>
 </head>
 <body>
-    <div id="bizis" class="cont">
-        <form method="POST" action="/ruta">
-        <fieldset>
-        <legend>Bizis:</legend>
-            Dirección:
-            <input type="text" name="origen"/>
-            <br><br>
-            <select class="centrar" id="estaciones" name="destino">
-                <script type="text/javascript"> 
-                    xhttp=new XMLHttpRequest();
-                    xhttp.open('GET', '/estaciones' ,false);
-                    xhttp.send();
-                    var documento=xhttp.responseText;
-                    var obj = JSON.parse(documento);
-                    var estado = obj.estado;
-                    if(estado){         /* creo las opciones del spinner */
-                        var ini = obj.infoBizi.start; var total = obj.infoBizi.totalCount;
-                        select = document.getElementById("estaciones");
-                        for(var line = ini; line < total; line++){
-                            var estacion = obj.infoBizi.result[line].title;
-                            var lat = obj.infoBizi.result[line].geometry.coordinates[1];
-                            var lng = obj.infoBizi.result[line].geometry.coordinates[0];
-                            var opt = document.createElement('option');
-                            opt.value = lat+', '+lng+', '+estacion;
-                            opt.innerHTML = estacion;
-                            select.appendChild(opt);
-                        }
-                    }
-                    
-                </script>
-                
-            </select>
-            <input id="submit" type="submit" value="Calcula" class="centrar"/>
-        </fieldset>
-        </form>
-    </div>
         <div id="mapa" class="cont">
         <fieldset>
         <legend>Mapa:</legend>
@@ -218,6 +182,41 @@
         </form>
         </fieldset>
     </div>
-
+    <div id="bizis" class="cont">
+        <form method="POST" action="/ruta">
+        <fieldset>
+        <legend>Bizis:</legend>
+            Dirección:
+            <input type="text" name="origen"/>
+            <br><br>
+            <select class="centrar" id="estaciones" name="destino">
+                <script type="text/javascript"> 
+                    xhttp=new XMLHttpRequest();
+                    xhttp.open('GET', '/estaciones' ,false);
+                    xhttp.send();
+                    var documento=xhttp.responseText;
+                    var obj = JSON.parse(documento);
+                    var estado = obj.estado;
+                    if(estado){         /* creo las opciones del spinner */
+                        var ini = obj.infoBizi.start; var total = obj.infoBizi.totalCount;
+                        select = document.getElementById("estaciones");
+                        for(var line = ini; line < total; line++){
+                            var estacion = obj.infoBizi.result[line].title;
+                            var lat = obj.infoBizi.result[line].geometry.coordinates[1];
+                            var lng = obj.infoBizi.result[line].geometry.coordinates[0];
+                            var opt = document.createElement('option');
+                            opt.value = lat+', '+lng+', '+estacion;
+                            opt.innerHTML = estacion;
+                            select.appendChild(opt);
+                        }
+                    }
+                    
+                </script>
+                
+            </select>
+            <input id="submit" type="submit" value="Calcula" class="centrar"/>
+        </fieldset>
+        </form>
+    </div>
 </body>
 </html>

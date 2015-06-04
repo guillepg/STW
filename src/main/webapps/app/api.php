@@ -143,17 +143,23 @@ $app->post("/tiempo", function() use($app){
 });
 
 /*
-Estaciones más visitadas (ranking)
-Poblaciones más consultadas (ranking)		Hecho!   /municipios	
-Número de visitas en los últimos X dias
-Porcentaje (queso) rutas VS numTiempo  		Hecho! 	/acciones	
-Consultas mal formadas VS total   Hecho! 	/consultas
+Estaciones más visitadas (ranking)			Hecho!  
+Poblaciones más consultadas (ranking)		Hecho!
+Porcentaje (queso) rutas VS numTiempo  		Hecho!	
+Consultas mal formadas VS total   			Hecho! 	
 */
+$app->get("/estadisticas", function() use($app){
+	$json='{"acciones": '.acciones().', "consultas": '.consultas().', "municipios": '.municipios(5).', "estaciones": '.estaciones(5).'}';
+	$json=json_decode($json);
+	$app->response->headers->set("Content-type", "application/json");
+    $app->response->status(200);
+    $app->response->body(json_encode($json));
+});
 
 
 //devuelve el número total de acciones (peticiones a /tiempo y a /rutas), el numero de peticiones
 // a /ruta y a /tiempo
-$app->get("/acciones", function() use($app){
+function acciones() {
 	$query = new ParseQuery("tiempo");
 	$results = $query->find();		//obtengo resultados
 	$numTiempo=count($results);
@@ -165,14 +171,11 @@ $app->get("/acciones", function() use($app){
 	$total=$numTiempo+$numRutas;
 
 	$data = '{"total": '.$total.', "tiempo": '.$numTiempo.', "rutas": '.$numRutas.'}';
-	$data=json_decode($data);
-	$app->response->headers->set("Content-type", "application/json");
-    $app->response->status(200);
-    $app->response->body(json_encode($data));
-});
+	return $data;
+};
 
 //devuelve el numero de consultas totales, el numero de las bien formadas y de las mal formadas (sobre las rutas)
-$app->get("/consultas", function() use($app){
+function consultas(){
 	$query = new ParseQuery("rutas");
 	$query->equalTo("estado", false);
 	$res = $query->find();		//obtengo resultados
@@ -186,61 +189,152 @@ $app->get("/consultas", function() use($app){
 	$numRutasTot=$numRutasErr+$numRutasTrue;
 
 	$data='{"total": '.$numRutasTot.', "correctas": '.$numRutasTrue.', "error": '.$numRutasErr.'}';
-	$data=json_decode($data);
-	$app->response->headers->set("Content-type", "application/json");
-    $app->response->status(200);
-    $app->response->body(json_encode($data));
-});
+	return $data;
+};
 
-$app->get("/municipios", function() use($app){
+//devuelve un ranking de las $num localidades con mas peticion de la prediccion del tiempo
+function municipios($num){
 	$query = new ParseQuery("tiempo");
 	$query->ascending("ciudad");
-	$res = $query->find();		//obtengo resultados
+	$res=$query->find();
 
-	$mun=$res[0]->get("ciudad");
-	$count=1;
-
-	$munaux=$mun;
-	$countaux=0;
-	for ($i = 0; $i < count($res); $i++) { 
-		$object=$res[$i];
-		$value=$object->get("ciudad");
-
-		if($value==$munaux){
-			$countaux=$countaux+1;
-		}else{
-			if($countaux>$count){
-				$count=$countaux;
-				$mun=$munaux;
-			}
-			$munaux=$value;
-			$countaux=1;
-		}
+	$sol=array();
+	$cont=array();
+	for($i=0; $i<$num; $i++){
+		$max=maxMun($res, $sol);
+		$n=maxCont($res, $max);
+		array_push($sol, $max);
+		array_push($cont, $n);
 	}
 
-	$data='{"ciudad": "'.$mun.'", "numero": '.$count.'}';
-	$data=json_decode($data);
-	$app->response->headers->set("Content-type", "application/json");
-    $app->response->status(200);
-    $app->response->body(json_encode($data));
-});
+	$data='{"ciudades": [';
+	for($i=0; $i<count($sol); $i++){
+		$data.='{"nombre": "'.$sol[$i].'", "visitas": '.$cont[$i].' }';
+		if($i<count($sol)-1){
+			$data.=', ';
+		}
+	}
+	$data.=']}';
 
+	return $data;
+};
 
+//devuelve el municipio q mas se repite y que no esta contenido en $sol
+function maxMun($res, $sol){
+	$mun="";
+	$count=0;
+	// res está ordenado por ciudad
+	$anterior="";
+	$canterior=0;
+	for ($i = 0; $i < count($res); $i++) { 
+		$object=$res[$i];
+		$actual=$object->get("ciudad");
 
+		if(contenido($actual, $sol)=="false"){
+			if($anterior==$actual){			//si el anterior es el mismo municipio
+				$canterior=$canterior+1;
+			}else{
+				$anterior=$actual;
+				$canterior=1;
+			}
+			if($canterior>$count){
+				$count=$canterior;
+				$mun=$anterior;
+			}
+		}
+	}
+	return $mun;
+};
 
-//por terminar!
-//devuelve el numero de visitas tanto a tiempo como a rutas en los ultimos X dias
-$app->get("/visitas/:ndias", function($ndias) use ($app){
-	$query = new ParseQuery("tiempo");
-	$query->descending("createdAt");
-	$results = $query->find();		//obtengo resultados
+//devuelve las veces que se repite $mun en $res
+function maxCont($res, $mun){
+	$cont=0;
+	for ($i = 0; $i < count($res); $i++) { 
+		$object=$res[$i];
+		$actual=$object->get("ciudad");
 
-	$fecha=$results[0]->getCreatedAt();
-	$fecha = date_format($fecha, 'Y-m-d H:i:s');
-	echo $fecha;
+		if($actual==$mun){
+			$cont=$cont+1;
+		}
+	}
+	return $cont;
+};
 
+function contenido($value, $sol){
+	for($i=0; $i<count($sol); $i++){
+		if($sol[$i]==$value){
+			return "true";
+		}
+	}
+	return "false";
+};
 
-});
+function estaciones($num){
+	$query = new ParseQuery("rutas");
+	$query->ascending("estacion");
+	$res=$query->find();
+
+	$sol=array();
+	$cont=array();
+	for($i=0; $i<$num; $i++){
+		$max=maxEst($res, $sol);
+		$n=maxContEst($res, $max);
+		array_push($sol, $max);
+		array_push($cont, $n);
+	}
+
+	$data='{"estaciones": [';
+	for($i=0; $i<count($sol); $i++){
+		$data.='{"nombre": "'.$sol[$i].'", "visitas": '.$cont[$i].' }';
+		if($i<count($sol)-1){
+			$data.=', ';
+		}
+	}
+	$data.=']}';
+
+	return $data;
+};
+
+//devuelve el municipio q mas se repite y que no esta contenido en $sol
+function maxEst($res, $sol){
+	$mun="";
+	$count=0;
+	// res está ordenado por ciudad
+	$anterior="";
+	$canterior=0;
+	for ($i = 0; $i < count($res); $i++) { 
+		$object=$res[$i];
+		$actual=$object->get("estacion");
+
+		if(contenido($actual, $sol)=="false"){
+			if($anterior==$actual){			//si el anterior es el mismo municipio
+				$canterior=$canterior+1;
+			}else{
+				$anterior=$actual;
+				$canterior=1;
+			}
+			if($canterior>$count){
+				$count=$canterior;
+				$mun=$anterior;
+			}
+		}
+	}
+	return $mun;
+};
+
+//devuelve las veces que se repite $mun en $res
+function maxContEst($res, $mun){
+	$cont=0;
+	for ($i = 0; $i < count($res); $i++) { 
+		$object=$res[$i];
+		$actual=$object->get("estacion");
+
+		if($actual==$mun){
+			$cont=$cont+1;
+		}
+	}
+	return $cont;
+};
 
 function getCoordinates($address){
     try{
