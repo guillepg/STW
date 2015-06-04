@@ -77,7 +77,7 @@ $app->post("/ruta", function() use ($app){
 	$datosform=$app->request;
 	$origen = $datosform->post('origen');
 	$destino = $datosform->post('destino');
-	list($lat1, $long1)=split(", ", $destino);
+	list($lat1, $long1, $estacion)=split(", ", $destino);
 	$origencoor=getCoordinates($origen);
 
 	if($origencoor!="Error"){		
@@ -88,16 +88,18 @@ $app->post("/ruta", function() use ($app){
 		$ruta->set("origenlong", $origencoor[1]);
 		$ruta->set("destinolat", $lat1);
 		$ruta->set("destinolong", $long1);
+		$ruta->set("estacion", "$estacion");
 
 		try {
 			$ruta->save();
 		} catch (ParseException $ex) {  
-			
+			echo "error!";
 		}
 	} else {
 		$ruta = ParseObject::create("rutas");		//se crea un objeto de la clase rutas
 		$ruta->set("ip", "$ip");					//se guarda su informacion
 		$ruta->set("estado", false);
+		$ruta->set("estacion", "$estacion");
 		
 		try {
 			$ruta->save();
@@ -105,24 +107,6 @@ $app->post("/ruta", function() use ($app){
 			
 		}
 	}
-
-	$app->redirect('plantilla.php');			//redireccionamos a la pag inicial
-
-});
-
-//guardar informacion sobre la peticion de la muestra de informacion del tiempo
-$app->post("/tiempo", function() use($app){
-	$ip = get_real_ip();
-	$datosform=$app->request;
-	$municipio = $datosform->post('mun');
-
-	$tiempo = ParseObject::create("tiempo");		//se crea un objeto de la clase tiempo
-	$tiempo->set("ip", $ip);
-	$tiempo->set("ciudad", $municipio);
-
-	try {
-		$tiempo->save();
-	} catch (ParseException $ex) {  }
 	$app->redirect('plantilla.php');			//redireccionamos a la pag inicial
 });
 
@@ -141,6 +125,31 @@ $app->post("/tiempo", function() use($app){
 	} catch (ParseException $ex) {  }
 	$app->redirect('plantilla.php');			//redireccionamos a la pag inicial
 });
+
+//guardar informacion sobre la peticion de la muestra de informacion del tiempo
+$app->post("/tiempo", function() use($app){
+	$ip = get_real_ip();
+	$datosform=$app->request;
+	$municipio = $datosform->post('mun');
+
+	$tiempo = ParseObject::create("tiempo");		//se crea un objeto de la clase tiempo
+	$tiempo->set("ip", $ip);
+	$tiempo->set("ciudad", $municipio);
+
+	try {
+		$tiempo->save();
+	} catch (ParseException $ex) {  }
+	$app->redirect('plantilla.php');			//redireccionamos a la pag inicial
+});
+
+/*
+Estaciones más visitadas (ranking)
+Poblaciones más consultadas (ranking)		Hecho!   /municipios	
+Número de visitas en los últimos X dias
+Porcentaje (queso) rutas VS numTiempo  		Hecho! 	/acciones	
+Consultas mal formadas VS total   Hecho! 	/consultas
+*/
+
 
 //devuelve el número total de acciones (peticiones a /tiempo y a /rutas), el numero de peticiones
 // a /ruta y a /tiempo
@@ -165,53 +174,61 @@ $app->get("/acciones", function() use($app){
 //devuelve el numero de consultas totales, el numero de las bien formadas y de las mal formadas (sobre las rutas)
 $app->get("/consultas", function() use($app){
 	$query = new ParseQuery("rutas");
-	$query->equalTo("estado", "false");
-	$results = $query->find();		//obtengo resultados
-	$numRutasErr=count($results);
+	$query->equalTo("estado", false);
+	$res = $query->find();		//obtengo resultados
+	$numRutasErr=count($res);
 
-	$query = new ParseQuery("rutas");
-	$query->equalTo("estado", "true");
-	$results = $query->find();		//obtengo resultados
-	$numRutasTrue=count($results);
+	$query2 = new ParseQuery("rutas");
+	$query2->equalTo("estado", true);
+	$res2 = $query2->find();		//obtengo resultados
+	$numRutasTrue=count($res2);
 
 	$numRutasTot=$numRutasErr+$numRutasTrue;
 
-	$data='{"total": '.$numRutasTot', "correctas": '.$numRutasTrue.', "error": '.$numRutasErr.'}';
+	$data='{"total": '.$numRutasTot.', "correctas": '.$numRutasTrue.', "error": '.$numRutasErr.'}';
+	$data=json_decode($data);
+	$app->response->headers->set("Content-type", "application/json");
+    $app->response->status(200);
+    $app->response->body(json_encode($data));
 });
 
-
-
-//devuelve un listado de ip ordenadas por ultimo acceso 
-//
-/*
-$app->get("/ip/:num", function($num) use($app){
+$app->get("/municipios", function() use($app){
 	$query = new ParseQuery("tiempo");
-	$query->descending("createdAt");
-	$results = $query->find();		//obtengo resultados
-	$query2 = new ParseQuery("rutas");
-	$query2->descending("createdAt");
-	$results2 = $query2->find();		//obtengo resultados
+	$query->ascending("ciudad");
+	$res = $query->find();		//obtengo resultados
 
-	$ip=array();
+	$mun=$res[0]->get("ciudad");
+	$count=1;
 
-	if(count($results)==0){
-		echo "no hay resultados";
-	} else{
-		for ($i = 0; $i < count($results); $i++) {
-			array_push($ip, $results[$i]->get("ip"));				//array de ips de acceso a tiempo
+	$munaux=$mun;
+	$countaux=0;
+	for ($i = 0; $i < count($res); $i++) { 
+		$object=$res[$i];
+		$value=$object->get("ciudad");
+
+		if($value==$munaux){
+			$countaux=$countaux+1;
+		}else{
+			if($countaux>$count){
+				$count=$countaux;
+				$mun=$munaux;
+			}
+			$munaux=$value;
+			$countaux=1;
 		}
-		for ($i = 0; $i < count($results2); $i++) {
-			array_push($ip, $results2[$i]->get("ip"));				//array de ips de acceso a rutas
-		}
-		
-
-		//terminar
-		
 	}
-	count($results);
-});
-*/
 
+	$data='{"ciudad": "'.$mun.'", "numero": '.$count.'}';
+	$data=json_decode($data);
+	$app->response->headers->set("Content-type", "application/json");
+    $app->response->status(200);
+    $app->response->body(json_encode($data));
+});
+
+
+
+
+//por terminar!
 //devuelve el numero de visitas tanto a tiempo como a rutas en los ultimos X dias
 $app->get("/visitas/:ndias", function($ndias) use ($app){
 	$query = new ParseQuery("tiempo");
@@ -221,20 +238,7 @@ $app->get("/visitas/:ndias", function($ndias) use ($app){
 	$fecha=$results[0]->getCreatedAt();
 	$fecha = date_format($fecha, 'Y-m-d H:i:s');
 	echo $fecha;
-/*
-$reciente=0;
-		for ($i = 0; $i < count($results); $i++) { 		//cojo el mas reciente
-			$object = $results[$i];
-			$fecha = date_format($object->getCreatedAt(), 'Y-m-d H:i:s');
 
-			if($fecha>date_format($results[$reciente]->getCreatedAt(), 'Y-m-d H:i:s')){
-				$reciente=$i;
-			}
-			
-		}
-		$object=$results[$reciente];
-
-*/
 
 });
 
