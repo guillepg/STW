@@ -1,25 +1,29 @@
 <?php
 require 'class/ChartJS.php';
 require 'class/ChartJS_Line.php';
-$Line = new ChartJS_Line('example', 500, 500);
-$Line->addLine(array(1, 2, 3, 4));
-$Line->addLabels(array('A label', 'Another', 'Another one', 'The last one'));
 ?>
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Chart.js-PHP</title>
+        <title>Stats.php</title>
     </head>
     <body>
-        <?php
-          echo $Line;
-        ?>
-        <script src="Chart.js"></script>
-        <script src="chart.js-php.js"></script>
-        <script>
-            (function() {
-                loadChartJsPhp();
-            })();
+        <script type="text/javascript">
+            var xhttp=new XMLHttpRequest();
+            xhttp.open('GET','/acciones',false);
+            xhttp.send();
+            var resp=xhttp.responseText;
+
+            var xmlhttp=new XMLHttpRequest();
+            xmlhttp.open("POST","chart.js.php",false);
+            xmlhttp.send(" json = {'raiz'='prueba'} ");
+            function redireccionar(){
+                window.location="chart.js.php?json="+resp;
+            }
+
+            redireccionar();
+
         </script>
+
     </body>
 </html>
