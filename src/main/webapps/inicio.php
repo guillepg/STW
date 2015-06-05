@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Trabajo STW</title>
-    <link rel="stylesheet" type="text/css" href="plantilla.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="inicio.css" media="screen" />
     <script src="jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
     <script type="text/javascript" src="gmaps.js"></script>
@@ -22,7 +22,6 @@
                 $(function(){
                     $(\"#mostrar\").on('click', codeAddress2);
                     function geolocalizar(){
-                        console.log(\"geolocalizo\");
                         GMaps.geolocate({success: function(position){
                             //obtenemos la posicion actual
                             lat = position.coords.latitude;  // guarda coords en lat y lng
@@ -60,7 +59,7 @@
                                                 '   Estado: '+obj.infoBizi.result[line].estado+
                                                 '   Bicis: '+obj.infoBizi.result[line].bicisDisponibles+
                                                 '   Anclajes: '+obj.infoBizi.result[line].anclajesDisponibles,
-                                          icon: \"http://www.zaragoza.es/contenidos/iconos/bizi/conbicis.png\"
+                                          icon: obj.infoBizi.result[line].icon
                                       });
                                 }
                             }
@@ -68,9 +67,7 @@
                             not_supported: function(){ alert(\"Su navegador no soporta geolocalización\"); },
                         });
                     };
-                    /*------------------------FUNCION BUENA--------------------------*/
                     function codeAddress2(e) {
-                        console.log(\"dibujo\");
                         xhttp_ip=new XMLHttpRequest();
                         xhttp_ip.open(\"GET\",\"/ip\",false);
                         xhttp_ip.send();
@@ -83,9 +80,6 @@
                         var documento=xhttp.responseText;
                         var obj = JSON.parse(documento);
                         var estado = obj.estado;
-                        console.log(obj.estado);
-                        console.log(obj.origen);
-                        console.log(obj.destino);
                         if(estado){
                             var orig = new google.maps.LatLng(obj.origen.lat, obj.origen.long);
                             var dest = new google.maps.LatLng(obj.destino.lat, obj.destino.long);
@@ -97,7 +91,6 @@
                                 map: map,
                                 position: dest
                             });
-                            console.log(\"marcadores creados\");
                             var directionsService = new google.maps.DirectionsService();
                             var directionsDisplay = new google.maps.DirectionsRenderer();
                             directionsDisplay.setMap(map);
@@ -106,13 +99,11 @@
                                 destination: dest,
                                 travelMode: google.maps.TravelMode.WALKING
                             };
-                            console.log(\"request creada\");
                             directionsService.route(request, function(result, status) {
                                 if (status == google.maps.DirectionsStatus.OK) {
                                     directionsDisplay.setDirections(result);
                                 }
                             });
-                            console.log(\"todo dibujado\");
                         }
                     }
                     geolocalizar();

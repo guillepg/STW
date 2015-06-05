@@ -107,7 +107,7 @@ $app->post("/ruta", function() use ($app){
 			
 		}
 	}
-	$app->redirect('plantilla.php');			//redireccionamos a la pag inicial
+	$app->redirect('inicio.php');			//redireccionamos a la pag inicial
 });
 
 //guardar informacion sobre la peticion de la muestra de informacion del tiempo
@@ -123,7 +123,7 @@ $app->post("/tiempo", function() use($app){
 	try {
 		$tiempo->save();
 	} catch (ParseException $ex) {  }
-	$app->redirect('plantilla.php');			//redireccionamos a la pag inicial
+	$app->redirect('inicio.php');			//redireccionamos a la pag inicial
 });
 
 //guardar informacion sobre la peticion de la muestra de informacion del tiempo
@@ -139,7 +139,7 @@ $app->post("/tiempo", function() use($app){
 	try {
 		$tiempo->save();
 	} catch (ParseException $ex) {  }
-	$app->redirect('plantilla.php');			//redireccionamos a la pag inicial
+	$app->redirect('inicio.php');			//redireccionamos a la pag inicial
 });
 
 /*
