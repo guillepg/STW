@@ -5,7 +5,7 @@ require 'class/ChartJS_Line.php';
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Stats.php</title>
+        <title>Estadísticas de uso</title>
     </head>
     <body>
         <script type="text/javascript">
@@ -13,15 +13,18 @@ require 'class/ChartJS_Line.php';
             xhttp.open('GET','/estadisticas',false);
             xhttp.send();
             var resp=xhttp.responseText;
-            var xmlhttp=new XMLHttpRequest();
-            xmlhttp.open("POST","chart.js.php",false);
-            xmlhttp.send(" json = {'raiz'='prueba'} ");
-            function redireccionar(){
-                window.location="chart.js.php?json="+resp;
+            if(resp.includes("Slim")) {
+                alert("La página no está disponible");
             }
-
-            redireccionar();
-
+            else{
+                var xmlhttp=new XMLHttpRequest();
+                xmlhttp.open("POST","chart.js.php",false);
+                xmlhttp.send(" json = {'raiz'='prueba'} ");
+                function redireccionar(){
+                    window.location="chart.js.php?json="+resp;
+                }
+                redireccionar();
+            }
         </script>
 
     </body>
