@@ -9,6 +9,10 @@
     <script type="text/javascript" src="gmaps.js"></script>
 </head>
 <body>
+        <div id="estadisticas">
+            <a href="stats/stats.php">Ver estadísticas</a>
+        </div>
+
         <div id="mapa" class="cont">
         <fieldset>
         <legend>Mapa:</legend>

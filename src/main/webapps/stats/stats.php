@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require 'class/ChartJS.php';
 require 'class/ChartJS_Line.php';
 ?>
