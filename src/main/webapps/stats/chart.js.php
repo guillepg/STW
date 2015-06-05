@@ -12,70 +12,75 @@
 
     $texto_json = $_GET["json"];
     $obj = json_decode($texto_json, true);
-
-    /*---GRAFICO DE BARRAS 1: Estaciones más visitadas---*/
-    $array_values_2 = array(33, 25, 23, 18, 5, 2);
-    $array_labels_2 = array("Estacion 1", "Estacion 2", "Estacion 3", "Estacion 4", "Estacion 5", "Estacion 6");
-    $Bar = new ChartJS_Bar('example_bar', 300, 300);
-    $Bar->addBars($array_values_2);
-    $Bar->addLabels($array_labels_2);
-
-    /*---GRAFICO DE BARRAS 2: Poblaciones más buscadas---*/
-    $array_values_3 = array(33, 25, 23, 18, 5, 2);
-    $array_labels_3 = array("Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6");
-    $Bar2 = new ChartJS_Bar('example_bar', 300, 300);
-    $Bar2->addBars($array_values_3);
-    $Bar2->addLabels($array_labels_3);
-
-    /*---GRAFICO DE LINEA: Historico de visitas---*/
-    $array_values_1 = array(33, 25, 23, 18, 5, 2);
-    $array_labels_1 = array("Dia 1", "Dia 2", "Dia 3", "Dia 4", "Dia 5", "Dia 6");
-    $Line = new ChartJS_Line('example_line', 300, 300);
-    $Line->addLine($array_values_1);
-    $Line->addLabels($array_labels_1);
-
-    /*---GRAFICO DE TARTA 2: Bien VS mal formadas---*/
-    /*consultas*/
-    $Pie2 = new ChartJS_Pie('example_pie', 300, 300);
-    $Pie2->addPart(40);
-    $Pie2->addPart(80);
-    $Pie2->addLabels($array_labels_3);
 ?>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Chart.js-PHP</title>
+        <title>Gráficas de uso</title>
         <script src="Chart.js"></script>
         <script src="chart.js-php.js"></script>
     </head>
     <body>
-        <h1>Estaciones más visitadas (bizi)</h1>
-        <?php
-        echo $Bar
-        ?>
+        <div align="left">
+            <form action="http://localhost/stats/stats.php">
+                <input type="submit" value="Recargar estadisticas">
+            </form>
+            <form action="http://localhost/inicio.php" >
+                    <input type="submit" value="Volver al inicio">
+            </form>
+        </div>
 
-        <h1>Poblaciones más consultadas (el tiempo)</h1>
-        <h1>Número de visitas en los últimos X dias</h1>
+        <div>
+            <h1 align="left">Estaciones más visitadas (bizi) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            Poblaciones más consultadas (el tiempo)</h1>
+            <?php
+                $array_values_1 = array($obj['estaciones']['estaciones'][0]['visitas'],
+                        $obj['estaciones']['estaciones'][1]['visitas'],
+                        $obj['estaciones']['estaciones'][2]['visitas'],
+                        $obj['estaciones']['estaciones'][3]['visitas'],
+                        $obj['estaciones']['estaciones'][4]['visitas']);
+                $array_labels_1 = array($obj['estaciones']['estaciones'][0]['nombre'],
+                        $obj['estaciones']['estaciones'][1]['nombre'],
+                        $obj['estaciones']['estaciones'][2]['nombre'],
+                        $obj['estaciones']['estaciones'][3]['nombre'],
+                        $obj['estaciones']['estaciones'][4]['nombre']);
+                $Bar = new ChartJS_Bar('example_bar', 500, 500);
+                $Bar->addBars($array_values_1);
+                $Bar->addLabels($array_labels_1);
 
-        <h1>Peticiones de Maps VS tiempo</h1>
-        <?php
-            $tiempo = (int)$obj['tiempo'];
-            $rutas = (int)$obj['rutas'];
-            $Pie = new ChartJS_Pie('example_pie', 300, 300);
-            $Pie->addPart($tiempo);
-            $Pie->addPart($rutas);
-            $Pie->addLabels(array("Consultas al servicio meteorológico", "Consultas al servicio de rutas"));
-            echo $Pie
-        ?>
-        <script type="text/javascript" >
-        //          http://localhost/stats/stats.php
-        </script>
+                $array_values_2 = array($obj['municipios']['ciudades'][0]['visitas'],
+                        $obj['municipios']['ciudades'][1]['visitas'],
+                        $obj['municipios']['ciudades'][2]['visitas'],
+                        $obj['municipios']['ciudades'][3]['visitas'],
+                        $obj['municipios']['ciudades'][4]['visitas']);
+                $array_labels_2 = array($obj['municipios']['ciudades'][0]['nombre'],
+                        $obj['municipios']['ciudades'][1]['nombre'],
+                        $obj['municipios']['ciudades'][2]['nombre'],
+                        $obj['municipios']['ciudades'][3]['nombre'],
+                        $obj['municipios']['ciudades'][4]['nombre']);
+                $Bar2 = new ChartJS_Bar('example_bar', 500, 500);
+                $Bar2->addBars($array_values_2);
+                $Bar2->addLabels($array_labels_2);
+                echo $Bar . $Bar2;
+            ?>
+        </div>
 
-        <h1>Peticiones bizi mal formadas VS total</h1>
-
-        <script src="Chart.js"></script>
-        <script src="chart.js-php.js"></script>
+        <div>
+            <h1>Peticiones de Maps y de tiempo &nbsp; &nbsp; Peticiones de ruta bien formadas y erróneas</h1>
+            <?php
+                $Pie = new ChartJS_Pie('example_pie', 300, 300);
+                $Pie->addPart($obj['acciones']['tiempo']);
+                $Pie->addPart($obj['acciones']['rutas']);
+                $Pie->addLabels(array("Consultas del tiempo", "Consultas de rutas"));
+                $PieBlank = new ChartJS_Pie('example_pie', 300, 300);
+                $Pie2 = new ChartJS_Pie('example_pie', 300, 300);
+                $Pie2->addPart($obj['consultas']['correctas']);
+                $Pie2->addPart($obj['consultas']['error']);
+                $Pie2->addLabels(array("Correctas", "Erroneas"));
+                echo $Pie . $PieBlank . $Pie2
+            ?>
+        </div>
         <script>
             (function () {
                 loadChartJsPhp();

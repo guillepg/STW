@@ -10,10 +10,9 @@ require 'class/ChartJS_Line.php';
     <body>
         <script type="text/javascript">
             var xhttp=new XMLHttpRequest();
-            xhttp.open('GET','/acciones',false);
+            xhttp.open('GET','/estadisticas',false);
             xhttp.send();
             var resp=xhttp.responseText;
-
             var xmlhttp=new XMLHttpRequest();
             xmlhttp.open("POST","chart.js.php",false);
             xmlhttp.send(" json = {'raiz'='prueba'} ");
