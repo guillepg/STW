@@ -22,50 +22,54 @@
                 $(function(){
                     $(\"#mostrar\").on('click', codeAddress2);
                     function geolocalizar(){
-                        GMaps.geolocate({success: function(position){
-                            //obtenemos la posicion actual
-                            lat = position.coords.latitude;  // guarda coords en lat y lng
-                            lng = position.coords.longitude;
-                            var myLatlng = new google.maps.LatLng(lat, lng);
-                            var myOptions = {
-                                    zoom: 13,
-                                    center: myLatlng,
-                                    mapTypeId: google.maps.MapTypeId.ROADMAP,
-                                };
-                            map = new google.maps.Map($(\"#map\").get(0), myOptions);
-                            var actual = new google.maps.Marker({
-                              position: myLatlng,
-                              map: map,
-                              title: \"ud. esta aqui\"
-                            });
-                            
-                            //generamos la peticion del JSON con las estaciones de bizi
-                            xhttp=new XMLHttpRequest();
-                            xhttp.open(\"GET\",\"/estaciones\",false);
-                            xhttp.send();
-                            var documento=xhttp.responseText;
-                            var obj = JSON.parse(documento);
-                            var estado = obj.estado;
-                            if(estado){
-                                var ini = obj.infoBizi.start; var total = obj.infoBizi.totalCount;
-                                for(var line = ini; line < total; line++){
-                                    var lat = obj.infoBizi.result[line].geometry.coordinates[1];
-                                    var lng = obj.infoBizi.result[line].geometry.coordinates[0];
-                                    var pos = new google.maps.LatLng(lat,lng);
-                                    var marker = new google.maps.Marker({
-                                          position: pos,
-                                          map: map,
-                                          title: 'Estacion '+obj.infoBizi.result[line].id+\": \"+obj.infoBizi.result[line].title+
-                                                '   Estado: '+obj.infoBizi.result[line].estado+
-                                                '   Bicis: '+obj.infoBizi.result[line].bicisDisponibles+
-                                                '   Anclajes: '+obj.infoBizi.result[line].anclajesDisponibles,
-                                          icon: obj.infoBizi.result[line].icon
-                                      });
+                        try{
+                            GMaps.geolocate({success: function(position){
+                                //obtenemos la posicion actual
+                                lat = position.coords.latitude;  // guarda coords en lat y lng
+                                lng = position.coords.longitude;
+                                var myLatlng = new google.maps.LatLng(lat, lng);
+                                var myOptions = {
+                                        zoom: 13,
+                                        center: myLatlng,
+                                        mapTypeId: google.maps.MapTypeId.ROADMAP,
+                                    };
+                                map = new google.maps.Map($(\"#map\").get(0), myOptions);
+                                var actual = new google.maps.Marker({
+                                  position: myLatlng,
+                                  map: map,
+                                  title: \"ud. esta aqui\"
+                                });
+
+                                //generamos la peticion del JSON con las estaciones de bizi
+                                xhttp=new XMLHttpRequest();
+                                xhttp.open(\"GET\",\"/estaciones\",false);
+                                xhttp.send();
+                                var documento=xhttp.responseText;
+                                var obj = JSON.parse(documento);
+                                var estado = obj.estado;
+                                if(estado){
+                                    var ini = obj.infoBizi.start; var total = obj.infoBizi.totalCount;
+                                    for(var line = ini; line < total; line++){
+                                        var lat = obj.infoBizi.result[line].geometry.coordinates[1];
+                                        var lng = obj.infoBizi.result[line].geometry.coordinates[0];
+                                        var pos = new google.maps.LatLng(lat,lng);
+                                        var marker = new google.maps.Marker({
+                                              position: pos,
+                                              map: map,
+                                              title: 'Estacion '+obj.infoBizi.result[line].id+\": \"+obj.infoBizi.result[line].title+
+                                                    '   Estado: '+obj.infoBizi.result[line].estado+
+                                                    '   Bicis: '+obj.infoBizi.result[line].bicisDisponibles+
+                                                    '   Anclajes: '+obj.infoBizi.result[line].anclajesDisponibles,
+                                              icon: obj.infoBizi.result[line].icon
+                                          });
+                                    }
                                 }
-                            }
-                            },error: function(error) { alert('Geolocalización falla: '+error.message); },
-                            not_supported: function(){ alert(\"Su navegador no soporta geolocalización\"); },
-                        });
+                                },error: function(error) { alert('Geolocalización falla: '+error.message); },
+                                not_supported: function(){ alert(\"Su navegador no soporta geolocalización\"); },
+                            });
+                        }catch(err){
+                            alert(\"Falló la comunicación con el servicio de geolocalización\");
+                        }
                     };
                     function codeAddress2(e) {
                         xhttp_ip=new XMLHttpRequest();
@@ -182,25 +186,30 @@
             <br><br>
             <select class="centrar" id="estaciones" name="destino">
                 <script type="text/javascript"> 
-                    xhttp=new XMLHttpRequest();
-                    xhttp.open('GET', '/estaciones' ,false);
-                    xhttp.send();
-                    var documento=xhttp.responseText;
-                    var obj = JSON.parse(documento);
-                    var estado = obj.estado;
-                    if(estado){         /* creo las opciones del spinner */
-                        var ini = obj.infoBizi.start; var total = obj.infoBizi.totalCount;
-                        select = document.getElementById("estaciones");
-                        for(var line = ini; line < total; line++){
-                            var estacion = obj.infoBizi.result[line].title;
-                            var lat = obj.infoBizi.result[line].geometry.coordinates[1];
-                            var lng = obj.infoBizi.result[line].geometry.coordinates[0];
-                            var opt = document.createElement('option');
-                            opt.value = lat+', '+lng+', '+estacion;
-                            opt.innerHTML = estacion;
-                            select.appendChild(opt);
+                    try{
+                        xhttp=new XMLHttpRequest();
+                        xhttp.open('GET', '/estaciones' ,false);
+                        xhttp.send();
+                        var documento=xhttp.responseText;
+                        var obj = JSON.parse(documento);
+                        var estado = obj.estado;
+                        if(estado){         /* creo las opciones del spinner */
+                            var ini = obj.infoBizi.start; var total = obj.infoBizi.totalCount;
+                            select = document.getElementById("estaciones");
+                            for(var line = ini; line < total; line++){
+                                var estacion = obj.infoBizi.result[line].title;
+                                var lat = obj.infoBizi.result[line].geometry.coordinates[1];
+                                var lng = obj.infoBizi.result[line].geometry.coordinates[0];
+                                var opt = document.createElement('option');
+                                opt.value = lat+', '+lng+', '+estacion;
+                                opt.innerHTML = estacion;
+                                select.appendChild(opt);
+                            }
                         }
+                    }catch(err){
+                        alert("Falló la comunicación con el servicio de estaciones");
                     }
+
                     
                 </script>
                 
