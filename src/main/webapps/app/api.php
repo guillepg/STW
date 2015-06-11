@@ -72,40 +72,43 @@ $app->get("/estaciones", function() use($app){
 
 //guardar informacion sobre el pedido de mostrar una ruta
 $app->post("/ruta", function() use ($app){
+	try{ 
+		$ip = get_real_ip();
+		$datosform=$app->request;
+		$origen = $datosform->post('origen');
+		$destino = $datosform->post('destino');
+		list($lat1, $long1, $estacion)=split(", ", $destino);
+		$origencoor=getCoordinates($origen);
 	
-	$ip = get_real_ip();
-	$datosform=$app->request;
-	$origen = $datosform->post('origen');
-	$destino = $datosform->post('destino');
-	list($lat1, $long1, $estacion)=split(", ", $destino);
-	$origencoor=getCoordinates($origen);
+		if($origencoor!="Error"){		
+			$ruta = ParseObject::create("rutas");		//se crea un objeto de la clase rutas
+			$ruta->set("ip", "$ip");					//se guarda su informacion
+			$ruta->set("estado", true);
+			$ruta->set("origenlat", $origencoor[0]);
+			$ruta->set("origenlong", $origencoor[1]);
+			$ruta->set("destinolat", $lat1);
+			$ruta->set("destinolong", $long1);
+			$ruta->set("estacion", "$estacion");
 
-	if($origencoor!="Error"){		
-		$ruta = ParseObject::create("rutas");		//se crea un objeto de la clase rutas
-		$ruta->set("ip", "$ip");					//se guarda su informacion
-		$ruta->set("estado", true);
-		$ruta->set("origenlat", $origencoor[0]);
-		$ruta->set("origenlong", $origencoor[1]);
-		$ruta->set("destinolat", $lat1);
-		$ruta->set("destinolong", $long1);
-		$ruta->set("estacion", "$estacion");
-
-		try {
-			$ruta->save();
-		} catch (ParseException $ex) {  
-			echo "error!";
-		}
-	} else {
-		$ruta = ParseObject::create("rutas");		//se crea un objeto de la clase rutas
-		$ruta->set("ip", "$ip");					//se guarda su informacion
-		$ruta->set("estado", false);
-		$ruta->set("estacion", "$estacion");
-		
-		try {
-			$ruta->save();
-		} catch (ParseException $ex) {  
+			try {
+				$ruta->save();
+			} catch (Parse\ParseException $ex) {  
+				echo "error!";
+			}
+		} else {
+			$ruta = ParseObject::create("rutas");		//se crea un objeto de la clase rutas
+			$ruta->set("ip", "$ip");					//se guarda su informacion
+			$ruta->set("estado", false);
+			$ruta->set("estacion", "$estacion");
 			
+			try {
+				$ruta->save();
+			} catch (Parse\ParseException $ex) {  
+				echo "error!";
+			}
 		}
+	} catch(ErrorException $e){
+		echo "error!";
 	}
 	$app->redirect('inicio.php');			//redireccionamos a la pag inicial
 });
@@ -122,7 +125,9 @@ $app->post("/tiempo", function() use($app){
 
 	try {
 		$tiempo->save();
-	} catch (ParseException $ex) {  }
+	} catch (Parse\ParseException $ex) {
+		echo "error!";
+	}
 	$app->redirect('inicio.php');			//redireccionamos a la pag inicial
 });
 
@@ -138,7 +143,9 @@ $app->post("/tiempo", function() use($app){
 
 	try {
 		$tiempo->save();
-	} catch (ParseException $ex) {  }
+	} catch (Parse\ParseException $ex) {
+		echo "error!";
+	}
 	$app->redirect('inicio.php');			//redireccionamos a la pag inicial
 });
 
